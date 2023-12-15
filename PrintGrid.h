@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "ANSI_COLORS.h"
+#include "ansi_colors.h"
 #include "Initialization.h"
 #define DASH '-'
 #define DOT '.'
@@ -8,13 +8,13 @@
 #define PRINTGIDE_H_INCLUDED
 
 void PrintGridExpert(GameGridExpert gameGrid)
-{    
-    for(int i=0; i < 9 ; i++)
+{
+    for (int i = 0; i < 9; i++)
     {
-      for(int j=0; j < 9 ; j++)
-      {
-        gameGrid.DataGrid[i][j]=' ';
-      }
+        for (int j = 0; j < 9; j++)
+        {
+            gameGrid.DataGrid[i][j] = ' ';
+        }
     }
 
     for (int i = 0; i < 25; i++)
@@ -80,31 +80,32 @@ void PrintGridExpert(GameGridExpert gameGrid)
         for (int j = 0; j < 25; j++)
         {
             if (gameGrid.outputGrid[i][j] == ' ')
-                printf(RED "%c ", gameGrid.outputGrid[i][j]);
+                printf(BLK "%c " RESET, gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == DOT)
-                printf(RED "%c ", gameGrid.outputGrid[i][j]);
+                printf(BHGRN "%c " RESET, gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == '|')
-                printf(MAGENTA "  ", gameGrid.outputGrid[i][j]);
+                printf(HBLK "  " RESET, gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == DASH)
-                printf(MAGENTA "  ", gameGrid.outputGrid[i][j]);
+                printf(HBLK "  " RESET, gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == '-')
                 printf("  ");
             else
-                printf(GREEN "%c ", gameGrid.outputGrid[i][j]);
+                printf(HMAG "%c " RESET, gameGrid.outputGrid[i][j]);
         }
         printf("\n");
     }
     printf("\n\n\n\n");
 }
-void PrintGridBeginner(GameGridBeginner gameGrid)
-{    
 
-    for(int i=0; i < 5 ; i++)
+void PrintGridBeginner(GameGridBeginner gameGrid)
+{
+
+    for (int i = 0; i < 5; i++)
     {
-      for(int j=0; j < 5 ; j++)
-      {
-        gameGrid.DataGrid[i][j]=' ';
-      }
+        for (int j = 0; j < 5; j++)
+        {
+            gameGrid.DataGrid[i][j] = ' ';
+        }
     }
 
     for (int i = 0; i < 9; i++)
@@ -163,28 +164,25 @@ void PrintGridBeginner(GameGridBeginner gameGrid)
         }
     }
     printf("\n\n\n\n");
-    printf(BLUE "################################################################################\n");
     for (int i = 0; i < 9; i++)
     {
         for (int j = 0; j < 9; j++)
         {
-             if (gameGrid.outputGrid[i][j] == ' ')
-                printf(RED "%c ", gameGrid.outputGrid[i][j]);
+            if (gameGrid.outputGrid[i][j] == ' ')
+                printf(BLK "%c " RESET, gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == DOT)
-                printf(RED "%c ", gameGrid.outputGrid[i][j]);
+                printf(BHGRN "%c " RESET, gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == '|')
-                printf(MAGENTA "  ", gameGrid.outputGrid[i][j]);
+                printf(HBLK "  " RESET, gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == DASH)
-                printf(MAGENTA "  ", gameGrid.outputGrid[i][j]);
+                printf(HBLK "  " RESET, gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == '-')
                 printf("  ");
             else
-                printf(GREEN "%c ", gameGrid.outputGrid[i][j]);
+                printf(HMAG "%c " RESET, gameGrid.outputGrid[i][j]);
         }
         printf("\n");
     }
-    printf(BLUE "################################################################################");
-    //printf("\n\n\n\n");
+    // printf("\n\n\n\n");
 }
 #endif
-

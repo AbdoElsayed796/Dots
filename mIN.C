@@ -1,11 +1,10 @@
-#include<stdio.h>
+#include <stdio.h>
 #include "PrintGrid.h"
 #include "Initialization.h"
-#include "Modification.h"
-int main ()
+int main()
 {
-GameGridExpert S;
-PrintGridExpert(S);
+    GameGridExpert S;
+    PrintGridExpert(S);
 
-return 0;
+    return 0;
 }
