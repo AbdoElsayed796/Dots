@@ -35,7 +35,7 @@ void printGrid(Grid gameGrid)
     for (int i = 0; i < gameGrid.size; i++)
     {
         for (int j = 0; j < gameGrid.size; j++)
-            if ((i % 2 == 0) && (j % 2 == 0))
+            if ((i % 2 == 0) && (j % 2 == 0))A
                 if (gameGrid.grid[i][j + 1] == DASH)
                     printf(BHGRN "%c" RESET, gameGrid.grid[i][j]);
                 else
