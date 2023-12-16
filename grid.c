@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "ansi_colors.h"
 
-#define DOT '.'
+#define DOT '*'
 #define DASH '-'
 
 typedef struct
@@ -27,12 +27,54 @@ void initializeGrid(Grid *gameGrid)
                 ch = (ch == 'Z') ? 'a' : ch + 1;
             }
 }
-      
+
+void printEvenRows(Grid gameGrid, int row)
+{
+    for (int j = 0; j < gameGrid.size; j++)
+        if (j % 2 == 0)
+            if (gameGrid.grid[row][j + 1] == DASH)
+                printf(BHGRN "%c" RESET, gameGrid.grid[row][j]);
+            else
+                printf(BHGRN "%-5c" RESET, gameGrid.grid[row][j]);
+        else if (gameGrid.grid[row][j] == DASH)
+        {
+            printf(HWHT);
+            for (int k = 0; k < 9; k++)
+                printf("%c", gameGrid.grid[row][j]);
+            printf(RESET);
+        }
+        else
+            printf(HMAG "%-5c" RESET, gameGrid.grid[row][j]);
+}
+void printOddRows(Grid gameGrid, int row)
+{
+    for (int line = 0; line <= 2; line++)
+    {
+        if (line % 2 == 0)
+        {
+            for (int j = 0; j < gameGrid.size; j++)
+                if (j % 2 == 0)
+                    if (gameGrid.grid[row][j] == '|')
+                        printf(HWHT "%-10c" RESET, '|');
+                    else
+                        printf("%-10c", ' ');
+        }
+        else
+            for (int j = 0; j < gameGrid.size; j++)
+                if (j % 2 == 0)
+                    if (gameGrid.grid[row][j] == '|')
+                        printf(HWHT "%-10c" RESET, '|');
+                    else
+                        printf(HMAG "%-10c" RESET, gameGrid.grid[row][j]);
+        printf("\n");
+    }
+}
 void printGrid(Grid gameGrid)
 {
     printf("\n\n");
 
     for (int i = 0; i < gameGrid.size; i++)
+<<<<<<< HEAD:new_grid_system.c
     {
         for (int j = 0; j < gameGrid.size; j++)
             if ((i % 2 == 0) && (j % 2 == 0))A
@@ -55,13 +97,23 @@ void printGrid(Grid gameGrid)
                 printf(HMAG "%-6c" RESET, gameGrid.grid[i][j]);
         printf("\n\n");
     }
+=======
+        if (i % 2 == 0)
+            printEvenRows(gameGrid, i);
+        else
+        {
+            printf("\n");
+            printOddRows(gameGrid, i);
+        }
+
+>>>>>>> 6f62461dc08119ef9918497a68a038e1b5648ae1:grid.c
     printf("\n\n");
 }
 
 Grid createGrid(unsigned char size)
 {
     Grid newGrid;
-    newGrid.size = size;//5
+    newGrid.size = size; // 5
 
     newGrid.grid = (unsigned char **)malloc(size * sizeof(unsigned char *));
     if (newGrid.grid == NULL)
@@ -92,11 +144,12 @@ void freeGrid(Grid *gameGrid)
 
 int main()
 {
-    unsigned char size = 11; // 57 
+    unsigned char size = 9;
     Grid gameGrid = createGrid(size);
 
     initializeGrid(&gameGrid);
-    gameGrid.grid[0][3] = DASH; //*what is this 
+    // gameGrid.grid[0][1] = DASH;
+    // gameGrid.grid[3][2] = '|';
     printGrid(gameGrid);
 
     freeGrid(&gameGrid);

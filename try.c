@@ -1,88 +1,148 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "ansi_colors.h"
-#include "initialization.h"
-
-#define DASH '-'
 #define DOT '.'
+#define DASH '-'
 
-void initializeGrid(GameGridExpert *gameGrid)
+typedef struct
 {
+    unsigned char **grid;
+    unsigned char size;
+} Grid;
 
-    for (int i = 0; i < 25; i++)
-        for (int j = 0; j < 25; j++)
-            if (i % 6 == 0 && j % 6 == 0)
-            {
-                gameGrid->outputGrid[i][j] = DOT; // Place DOT symbol at multiples of 6 in both i and j
+void initializeGrid(Grid *gameGrid)
+{
+    unsigned char ch = 'A';
 
-                if (j < 24)
-                    for (int k = 1; k <= 5; k++)
-                    {
-                        gameGrid->outputGrid[i][j + k] = DASH; // Draw horizontal dashes
-                        gameGrid->outputGrid[j + k][i] = '|';  // Draw vertical lines
-                    }
-            }
+    for (int i = 0; i < gameGrid->size; i++)
+        for (int j = 0; j < gameGrid->size; j++)
+            if ((i % 2 == 0) && (j % 2 == 0))
+                gameGrid->grid[i][j] = DOT;
+            else if ((i % 2 == 1) && (j % 2 == 1))
+                gameGrid->grid[i][j] = ' ';
             else
-                gameGrid->outputGrid[i][j] = ' '; // Fill other positions with space character
-
-    char ch = 'A'; // Initialize character 'ch' to 'A'  
-
-    // Populate the grid with characters at specific positions
-    for (int i = 0; i < 25; i += 6)
-        for (int j = 0; j < 25; j += 6)
-        {
-            if (i + (6 / 2) < 25)
             {
-                // Place character in the center horizontally
-                gameGrid->outputGrid[i + (6 / 2)][j] = ch;
+                gameGrid->grid[i][j] = ch;
                 ch = (ch == 'Z') ? 'a' : ch + 1;
             }
-            if (j + (6 / 2) < 25)
-            {
-                // Place character in the center vertically
-                gameGrid->outputGrid[i][j + (6 / 2)] = ch;
-                ch = (ch == 'Z') ? 'a' : ch + 1;
-            }
-        }
 }
 
-void printGrid(unsigned char gameGrid[25][25])
+void printGrid(Grid gameGrid)
 {
+    printf("\n\n");
 
-    // Display the grid with formatted characters
-    printf("\n\n\n\n");
-    for (int i = 0; i < 25; i++)
+    for (int i = 0; i < gameGrid.size; i++)
     {
-        for (int j = 0; j < 25; j++)
-            switch (gameGrid[i][j])
+        if (i % 2 == 0)
+            for (int j = 0; j < gameGrid.size; j++)
+                if (j % 2 == 0)
+                    if (gameGrid.grid[i][j + 1] == DASH)
+                        printf(BHGRN "%c" RESET, gameGrid.grid[i][j]);
+                    else
+                        printf(BHGRN "%-6c" RESET, gameGrid.grid[i][j]);
+                else if(gameGrid.grid[i][j] == DASH)
+                {
+                    printf(HWHT);
+                    for (int k = 0; k < 11; k++)
+                        printf("%c", gameGrid.grid[i][j]);
+                    printf(RESET);
+                }
+                else
+                    printf(HMAG "%-6c" RESET, gameGrid.grid[i][j]);
+        else
+        {
+            
+            printf("\n");
+                for (int j = 0; j < gameGrid.size; j++)
+                {
+                    if (j % 2 == 0)
+                    {
+                        if (gameGrid.grid[i][j] == '|')
+                        {
+                            printf(HWHT "%-12c", '|');
+                        }
+                        else
+                            printf("%-12c", ' ');
+                    }
+                }
+            printf("\n");
+            for (int j = 0; j < gameGrid.size; j++)
             {
-            case ' ':
-                printf(BLK "%c " RESET, gameGrid[i][j]);
-                break;
-            case DOT:
-                printf(BHGRN "%c " RESET, gameGrid[i][j]);
-                break;
-            case '|':
-                printf(HBLK "  " RESET, gameGrid[i][j]);
-                break;
-            case DASH:
-                printf(HBLK "  " RESET, gameGrid[i][j]);
-                break;
-            default:
-                printf(HMAG "%c " RESET, gameGrid[i][j]);
-                break;
+                if (j % 2 == 0)
+                {
+                    if (gameGrid.grid[i][j] == '|')
+                    {
+                        printf(HWHT "%-12c", '|');
+                    }
+                    else
+                    {
+                        printf(HMAG "%-12c" RESET, gameGrid.grid[i][j]);
+                    }
+                }
             }
-        printf("\n");
+            printf("\n");
+            for (int j = 0; j < gameGrid.size; j++)
+            {
+                if (j % 2 == 0)
+                {
+                    if (gameGrid.grid[i][j] == '|')
+                    {
+                        printf(HWHT "%-12c", '|');
+                    }
+                    else
+                        printf("%-12c", ' ');
+                }
+            }
+            printf("\n");
+        }
     }
-    printf("\n\n\n\n");
+
+    printf("\n\n");
+}
+
+Grid createGrid(unsigned char size)
+{
+    Grid newGrid;
+    newGrid.size = size; // 5
+
+    newGrid.grid = (unsigned char **)malloc(size * sizeof(unsigned char *));
+    if (newGrid.grid == NULL)
+    {
+        printf("Memory allocation failed. Exiting...\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        newGrid.grid[i] = (unsigned char *)malloc(size * sizeof(unsigned char));
+        if (newGrid.grid[i] == NULL)
+        {
+            printf("Memory allocation failed. Exiting...\n");
+            exit(1);
+        }
+    }
+
+    return newGrid;
+}
+void freeGrid(Grid *gameGrid)
+{
+    for (int i = 0; i < gameGrid->size; i++)
+        free(gameGrid->grid[i]);
+
+    free(gameGrid->grid);
 }
 
 int main()
 {
-    unsigned char game[25][25];
+    unsigned char size = 7; // 57
+    Grid gameGrid = createGrid(size);
 
-    GameGridExpert S;
-    initializeGrid(&S);
-    printGrid(S.outputGrid);
+    initializeGrid(&gameGrid);
+     gameGrid.grid[0][1] = DASH;
+    gameGrid.grid[1][0] = '|'; //
+    printGrid(gameGrid);
+
+    freeGrid(&gameGrid);
 
     return 0;
 }
