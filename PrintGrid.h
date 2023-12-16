@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "ANSI_COLORS.h"
+#include "ansi_colors.h"
 #include "Initialization.h"
 #define DASH '-'
 #define DOT '.'
@@ -7,6 +7,7 @@
 #ifndef PRINTGIDE_H_INCLUDED
 #define PRINTGIDE_H_INCLUDED
 
+<<<<<<< HEAD
 void PrintGridExpert(GameGridExpert *gameGrid)
 {    
     for(int i=0; i < 9 ; i++)
@@ -15,6 +16,16 @@ void PrintGridExpert(GameGridExpert *gameGrid)
       {
         gameGrid->DataGrid[i][j]=' ';
       }
+=======
+void PrintGridExpert(GameGridExpert gameGrid)
+{
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            gameGrid.DataGrid[i][j] = ' ';
+        }
+>>>>>>> 877fdd9d67d9a48930b00ef90a6368c90ce61906
     }
 
     for (int i = 0; i < 25; i++)
@@ -79,6 +90,7 @@ void PrintGridExpert(GameGridExpert *gameGrid)
     {
         for (int j = 0; j < 25; j++)
         {
+<<<<<<< HEAD
             if (gameGrid->outputGrid[i][j] == ' ')
                 printf(RED "%c ", gameGrid->outputGrid[i][j]);
             else if (gameGrid->outputGrid[i][j] == DOT)
@@ -91,20 +103,35 @@ void PrintGridExpert(GameGridExpert *gameGrid)
                 printf("  ");
             else
                 printf(GREEN "%c ", gameGrid->outputGrid[i][j]);
+=======
+            if (gameGrid.outputGrid[i][j] == ' ')
+                printf(BLK "%c " RESET, gameGrid.outputGrid[i][j]);
+            else if (gameGrid.outputGrid[i][j] == DOT)
+                printf(BHGRN "%c " RESET, gameGrid.outputGrid[i][j]);
+            else if (gameGrid.outputGrid[i][j] == '|')
+                printf(HBLK "  " RESET, gameGrid.outputGrid[i][j]);
+            else if (gameGrid.outputGrid[i][j] == DASH)
+                printf(HBLK "  " RESET, gameGrid.outputGrid[i][j]);
+            else if (gameGrid.outputGrid[i][j] == '-')
+                printf("  ");
+            else
+                printf(HMAG "%c " RESET, gameGrid.outputGrid[i][j]);
+>>>>>>> 877fdd9d67d9a48930b00ef90a6368c90ce61906
         }
         printf("\n");
     }
     printf("\n\n\n\n");
 }
-void PrintGridBeginner(GameGridBeginner gameGrid)
-{    
 
-    for(int i=0; i < 5 ; i++)
+void PrintGridBeginner(GameGridBeginner gameGrid)
+{
+
+    for (int i = 0; i < 5; i++)
     {
-      for(int j=0; j < 5 ; j++)
-      {
-        gameGrid.DataGrid[i][j]=' ';
-      }
+        for (int j = 0; j < 5; j++)
+        {
+            gameGrid.DataGrid[i][j] = ' ';
+        }
     }
 
     for (int i = 0; i < 9; i++)
@@ -163,28 +190,29 @@ void PrintGridBeginner(GameGridBeginner gameGrid)
         }
     }
     printf("\n\n\n\n");
-    printf(BLUE "################################################################################\n");
     for (int i = 0; i < 9; i++)
     {
         for (int j = 0; j < 9; j++)
         {
-             if (gameGrid.outputGrid[i][j] == ' ')
-                printf(RED "%c ", gameGrid.outputGrid[i][j]);
+            if (gameGrid.outputGrid[i][j] == ' ')
+                printf(BLK "%c " RESET, gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == DOT)
+<<<<<<< HEAD
                 printf(BLACK "%c ", gameGrid.outputGrid[i][j]);
+=======
+                printf(BHGRN "%c " RESET, gameGrid.outputGrid[i][j]);
+>>>>>>> 877fdd9d67d9a48930b00ef90a6368c90ce61906
             else if (gameGrid.outputGrid[i][j] == '|')
-                printf(MAGENTA "  ", gameGrid.outputGrid[i][j]);
+                printf(HBLK "  " RESET, gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == DASH)
-                printf(MAGENTA "  ", gameGrid.outputGrid[i][j]);
+                printf(HBLK "  " RESET, gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == '-')
                 printf("  ");
             else
-                printf(GREEN "%c ", gameGrid.outputGrid[i][j]);
+                printf(HMAG "%c " RESET, gameGrid.outputGrid[i][j]);
         }
         printf("\n");
     }
-    printf(BLUE "################################################################################");
-    //printf("\n\n\n\n");
+    // printf("\n\n\n\n");
 }
 #endif
-
