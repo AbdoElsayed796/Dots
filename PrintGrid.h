@@ -7,13 +7,13 @@
 #ifndef PRINTGIDE_H_INCLUDED
 #define PRINTGIDE_H_INCLUDED
 
-void PrintGridExpert(GameGridExpert gameGrid)
+void PrintGridExpert(GameGridExpert *gameGrid)
 {    
     for(int i=0; i < 9 ; i++)
     {
       for(int j=0; j < 9 ; j++)
       {
-        gameGrid.DataGrid[i][j]=' ';
+        gameGrid->DataGrid[i][j]=' ';
       }
     }
 
@@ -24,10 +24,10 @@ void PrintGridExpert(GameGridExpert gameGrid)
         {
             if (i % 6 == 0 && j % 6 == 0)
             {
-                gameGrid.outputGrid[i][j] = DOT;
+                gameGrid->outputGrid[i][j] = DOT;
             }
             else
-                gameGrid.outputGrid[i][j] = ' ';
+                gameGrid->outputGrid[i][j] = ' ';
         }
     }
     for (int i = 0; i < 25; i++)
@@ -38,8 +38,8 @@ void PrintGridExpert(GameGridExpert gameGrid)
             {
                 for (int k = 1; k <= 5; k++)
                 {
-                    gameGrid.outputGrid[i][j + k] = DASH;
-                    gameGrid.outputGrid[j + k][i] = '|';
+                    gameGrid->outputGrid[i][j + k] = DASH;
+                    gameGrid->outputGrid[j + k][i] = '|';
                 }
             }
         }
@@ -56,7 +56,7 @@ void PrintGridExpert(GameGridExpert gameGrid)
                 // Check if there is room to place '1' between adjacent '*'
                 if (i + 6 < 25)
                 {
-                    gameGrid.outputGrid[i + 6 / 2][j] = a;
+                    gameGrid->outputGrid[i + 6 / 2][j] = a;
                     if (a == 'Z')
                         a = 'a';
                     else
@@ -64,7 +64,7 @@ void PrintGridExpert(GameGridExpert gameGrid)
                 }
                 if (j + 6 < 25)
                 {
-                    gameGrid.outputGrid[i][j + 6 / 2] = a;
+                    gameGrid->outputGrid[i][j + 6 / 2] = a;
                     if (a == 'Z')
                         a = 'a';
                     else
@@ -79,18 +79,18 @@ void PrintGridExpert(GameGridExpert gameGrid)
     {
         for (int j = 0; j < 25; j++)
         {
-            if (gameGrid.outputGrid[i][j] == ' ')
-                printf(RED "%c ", gameGrid.outputGrid[i][j]);
-            else if (gameGrid.outputGrid[i][j] == DOT)
-                printf(RED "%c ", gameGrid.outputGrid[i][j]);
-            else if (gameGrid.outputGrid[i][j] == '|')
-                printf(MAGENTA "  ", gameGrid.outputGrid[i][j]);
-            else if (gameGrid.outputGrid[i][j] == DASH)
-                printf(MAGENTA "  ", gameGrid.outputGrid[i][j]);
-            else if (gameGrid.outputGrid[i][j] == '-')
+            if (gameGrid->outputGrid[i][j] == ' ')
+                printf(RED "%c ", gameGrid->outputGrid[i][j]);
+            else if (gameGrid->outputGrid[i][j] == DOT)
+                printf(BLACK "%c ", gameGrid->outputGrid[i][j]);
+            else if (gameGrid->outputGrid[i][j] == '|')
+                printf(MAGENTA "  ", gameGrid->outputGrid[i][j]);
+            else if (gameGrid->outputGrid[i][j] == DASH)
+                printf(MAGENTA "  ", gameGrid->outputGrid[i][j]);
+            else if (gameGrid->outputGrid[i][j] == '-')
                 printf("  ");
             else
-                printf(GREEN "%c ", gameGrid.outputGrid[i][j]);
+                printf(GREEN "%c ", gameGrid->outputGrid[i][j]);
         }
         printf("\n");
     }
@@ -171,7 +171,7 @@ void PrintGridBeginner(GameGridBeginner gameGrid)
              if (gameGrid.outputGrid[i][j] == ' ')
                 printf(RED "%c ", gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == DOT)
-                printf(RED "%c ", gameGrid.outputGrid[i][j]);
+                printf(BLACK "%c ", gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == '|')
                 printf(MAGENTA "  ", gameGrid.outputGrid[i][j]);
             else if (gameGrid.outputGrid[i][j] == DASH)

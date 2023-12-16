@@ -5,7 +5,7 @@
 int main ()
 {
 GameGridExpert S;
-PrintGridExpert(S);
-
+PrintGridExpert(&S);
+ModificationExpert(&S,'n');
 return 0;
 }
