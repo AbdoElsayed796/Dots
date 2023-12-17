@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ansi_colors.h"
-
 #define DOT '.'
 #define DASH '-'
 
@@ -135,12 +134,12 @@ void freeGrid(Grid *gameGrid)
 
 int main()
 {
-    unsigned char size = 5; // 57
+    unsigned char size = 7; // 57
     Grid gameGrid = createGrid(size);
 
     initializeGrid(&gameGrid);
-    // gameGrid.grid[0][1] = DASH;
-    gameGrid.grid[3][2] = '|'; //
+     gameGrid.grid[0][1] = DASH;
+    gameGrid.grid[1][0] = '|'; //
     printGrid(gameGrid);
 
     freeGrid(&gameGrid);
