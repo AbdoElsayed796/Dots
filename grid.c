@@ -32,17 +32,17 @@ void initializeGrid(Grid *gameGrid)
             }
 }
 
-void printEvenRows(Grid gameGrid, int row)
+void printEvenRows(Grid *gameGrid, int row)
 {
-    for (int j = 0; j < gameGrid.size; j++)
+    for (int j = 0; j < gameGrid->size; j++)
         if (j % 2 == 0)
-            if ((gameGrid.grid[row][j + 1] == PLAYER1) || (gameGrid.grid[row][j + 1] == PLAYER2))
-                printf(BHGRN "%c" RESET, gameGrid.grid[row][j]);
+            if ((gameGrid->grid[row][j + 1] == PLAYER1) || (gameGrid->grid[row][j + 1] == PLAYER2))
+                printf(BHGRN "%c" RESET, gameGrid->grid[row][j]);
             else
-                printf(BHGRN "%-5c" RESET, gameGrid.grid[row][j]);
+                printf(BHGRN "%-5c" RESET, gameGrid->grid[row][j]);
         else
         {
-            switch (gameGrid.grid[row][j])
+            switch (gameGrid->grid[row][j])
             {
             case PLAYER1:
                 for (int k = 0; k < 9; k++)
@@ -53,24 +53,24 @@ void printEvenRows(Grid gameGrid, int row)
                     printf(BHRED "%c" RESET, DASH);
                 break;
             default:
-                printf(BHYEL "%-5c" RESET, gameGrid.grid[row][j]);
+                printf(BHYEL "%-5c" RESET, gameGrid->grid[row][j]);
             }
         }
 }
-void printOddRows(Grid gameGrid, int row)
+void printOddRows(Grid *gameGrid, int row)
 {
     for (int line = 0; line <= 2; line++)
     {
         if (line % 2 == 0)
         {
             printf("\t\t\t");
-            for (int j = 0; j < gameGrid.size; j++)
+            for (int j = 0; j < gameGrid->size; j++)
             {
                 if (j % 2 == 0)
                 {
-                    if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))
+                    if ((gameGrid->grid[row][j] == PLAYER1) || (gameGrid->grid[row][j] == PLAYER2))
                     {
-                        switch (gameGrid.grid[row][j])
+                        switch (gameGrid->grid[row][j])
                         {
                         case PLAYER1:
                             printf(BHBLU "%c" RESET, '|');
@@ -81,7 +81,7 @@ void printOddRows(Grid gameGrid, int row)
                         }
                     }
                     if (j % 2 == 0)
-                        if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))
+                        if ((gameGrid->grid[row][j] == PLAYER1) || (gameGrid->grid[row][j] == PLAYER2))
                             printf("%-9c", ' ');
                         else
                             printf("%-10c", ' ');
@@ -91,12 +91,12 @@ void printOddRows(Grid gameGrid, int row)
         else
         {
             printf("\t\t\t");
-            for (int j = 0; j < gameGrid.size; j++)
+            for (int j = 0; j < gameGrid->size; j++)
                 if (j % 2 == 0)
                 {
-                    if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))
+                    if ((gameGrid->grid[row][j] == PLAYER1) || (gameGrid->grid[row][j] == PLAYER2))
                     {
-                        switch (gameGrid.grid[row][j])
+                        switch (gameGrid->grid[row][j])
                         {
                         case PLAYER1:
                             printf(BHBLU "%-5c" RESET, '|');
@@ -107,11 +107,11 @@ void printOddRows(Grid gameGrid, int row)
                         }
                     }
                     else
-                        printf(BHYEL "%-5c" RESET, gameGrid.grid[row][j]);
+                        printf(BHYEL "%-5c" RESET, gameGrid->grid[row][j]);
                 }
                 else
                 {
-                    switch (gameGrid.grid[row][j])
+                    switch (gameGrid->grid[row][j])
                     {
                     case PLAYER1:
                         printf(BHBLU "%-5c" RESET, '1');
@@ -127,11 +127,10 @@ void printOddRows(Grid gameGrid, int row)
         printf("\n");
     }
 }
-void printGrid(Grid gameGrid)
+void printGrid(Grid *gameGrid)
 {
-    printf("\n\n");
-
-    for (int i = 0; i < gameGrid.size; i++)
+    printf("\n");
+    for (int i = 0; i < gameGrid->size; i++)
         if (i % 2 == 0)
         {
             printf("\t\t\t");
@@ -143,7 +142,6 @@ void printGrid(Grid gameGrid)
             printf("\n");
             printOddRows(gameGrid, i);
         }
-
     printf("\n\n");
 }
 
@@ -177,30 +175,4 @@ void freeGrid(Grid *gameGrid)
         free(gameGrid->grid[i]);
 
     free(gameGrid->grid);
-}
-
-int main()
-{
-    unsigned char size = 11;
-    Grid gameGrid = createGrid(size);
-
-    initializeGrid(&gameGrid);
-    // gameGrid.grid[0][1] = PLAYER1;
-    // gameGrid.grid[2][1] = PLAYER2;
-    // gameGrid.grid[1][0] = PLAYER2;
-    // gameGrid.grid[0][3] = PLAYER2;
-
-    // gameGrid.grid[1][4] = PLAYER2;
-    // gameGrid.grid[3][2] = PLAYER1;
-    // gameGrid.grid[1][2] = PLAYER2;
-    // gameGrid.grid[1][1] = PLAYER2;
-    // gameGrid.grid[1][3] = PLAYER2;
-    // gameGrid.grid[3][1] = PLAYER2;
-    // gameGrid.grid[1][5] = PLAYER1;
-    // gameGrid.grid[1][6] = PLAYER2;
-    printGrid(gameGrid);
-
-    freeGrid(&gameGrid);
-
-    return 0;
 }
