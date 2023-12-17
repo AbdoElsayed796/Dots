@@ -4,8 +4,8 @@
 
 #define DOT '*'
 #define DASH '-'
-#define PLAYER1 '1'
-#define PLAYER2 '2'
+#define PLAYER1 1
+#define PLAYER2 2
 typedef struct
 {
     unsigned char **grid;
@@ -14,7 +14,7 @@ typedef struct
 
 void initializeGrid(Grid *gameGrid)
 {
-    unsigned char ch = 'A';
+    unsigned char ch = '0';
 
     for (int i = 0; i < gameGrid->size; i++)
         for (int j = 0; j < gameGrid->size; j++)
@@ -25,7 +25,10 @@ void initializeGrid(Grid *gameGrid)
             else
             {
                 gameGrid->grid[i][j] = ch;
-                ch = (ch == 'Z') ? 'a' : ch + 1;
+                if (ch > 'A')
+                    ch = (ch == 'Z') ? 'a' : ch + 1;
+                else
+                    ch = (ch == '9') ? 'A' : ch + 1;
             }
 }
 
@@ -42,16 +45,12 @@ void printEvenRows(Grid gameGrid, int row)
             switch (gameGrid.grid[row][j])
             {
             case PLAYER1:
-                printf(BHBLU);
                 for (int k = 0; k < 9; k++)
-                    printf("%c", DASH);
-                printf(RESET);
+                    printf(BHBLU "%c" RESET, DASH);
                 break;
             case PLAYER2:
-                printf(BHRED);
                 for (int k = 0; k < 9; k++)
-                    printf("%c", DASH);
-                printf(RESET);
+                    printf(BHRED "%c" RESET, DASH);
                 break;
             default:
                 printf(BHYEL "%-5c" RESET, gameGrid.grid[row][j]);
@@ -115,10 +114,10 @@ void printOddRows(Grid gameGrid, int row)
                     switch (gameGrid.grid[row][j])
                     {
                     case PLAYER1:
-                        printf(BHBLU "%-5c" RESET, PLAYER1);
+                        printf(BHBLU "%-5c" RESET, '1');
                         break;
                     case PLAYER2:
-                        printf(BHRED "%-5c" RESET, PLAYER2);
+                        printf(BHRED "%-5c" RESET, '2');
                         break;
                     default:
                         printf(BHRED "%-5c" RESET, ' ');
@@ -182,23 +181,23 @@ void freeGrid(Grid *gameGrid)
 
 int main()
 {
-    unsigned char size = 9;
+    unsigned char size = 11;
     Grid gameGrid = createGrid(size);
 
     initializeGrid(&gameGrid);
-    gameGrid.grid[0][1] = PLAYER1;
-    gameGrid.grid[2][1] = PLAYER2;
-    gameGrid.grid[1][0] = PLAYER2;
-    gameGrid.grid[0][3] = PLAYER2;
+    // gameGrid.grid[0][1] = PLAYER1;
+    // gameGrid.grid[2][1] = PLAYER2;
+    // gameGrid.grid[1][0] = PLAYER2;
+    // gameGrid.grid[0][3] = PLAYER2;
 
-    gameGrid.grid[1][4] = PLAYER2;
-    gameGrid.grid[3][2] = PLAYER1;
-    gameGrid.grid[1][2] = PLAYER2;
-    gameGrid.grid[1][1] = PLAYER2;
-    gameGrid.grid[1][3] = PLAYER2;
-    gameGrid.grid[3][1] = PLAYER2;
-    gameGrid.grid[1][5] = PLAYER1;
-    gameGrid.grid[1][6] = PLAYER2;
+    // gameGrid.grid[1][4] = PLAYER2;
+    // gameGrid.grid[3][2] = PLAYER1;
+    // gameGrid.grid[1][2] = PLAYER2;
+    // gameGrid.grid[1][1] = PLAYER2;
+    // gameGrid.grid[1][3] = PLAYER2;
+    // gameGrid.grid[3][1] = PLAYER2;
+    // gameGrid.grid[1][5] = PLAYER1;
+    // gameGrid.grid[1][6] = PLAYER2;
     printGrid(gameGrid);
 
     freeGrid(&gameGrid);
