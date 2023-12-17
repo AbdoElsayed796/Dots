@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include "grid.h"
 
+unsigned char getUserInput()
+{
+    unsigned char userInput;
 
+}
 int main()
 {
-    unsigned char size = 11;
+    unsigned char size = 7;
     Grid gameGrid = createGrid(size);
 
     initializeGrid(&gameGrid);
@@ -22,7 +26,7 @@ int main()
     // gameGrid.grid[1][5] = PLAYER1;
     // gameGrid.grid[1][6] = PLAYER2;
 
-    printGrid(&gameGrid);
+    printGrid(gameGrid);
 
     freeGrid(&gameGrid);
 
