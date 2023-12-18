@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ansi_colors.h"
-#include "grid.h"
+#include "grid.h" //Include header file defining Grid structure and constants
 
 void initializeGrid(Grid *gameGrid)
 {
@@ -57,7 +57,7 @@ void printOddRows(Grid gameGrid, int row)
             printf("\t\t\t");
             for (int j = 0; j < gameGrid.size; j++)
             {
-                if (j % 2 == 0)//* prints vertical lines
+                if (j % 2 == 0)//* prints vertical lines or spaces
                 {
                     if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))
                     {
@@ -118,10 +118,10 @@ void printOddRows(Grid gameGrid, int row)
         printf("\n");
     }
 }
-void printGrid(Grid gameGrid) //*even rows are printed once but odd rows are printed 3 times
+void printGrid(Grid gameGrid) 
 {
     printf("\n");
-    for (int i = 0; i < gameGrid.size; i++)
+    for (int i = 0; i < gameGrid.size; i++) //*even rows are printed once but odd rows are printed 3 times
         if (i % 2 == 0)
         {
             printf("\t\t\t");
