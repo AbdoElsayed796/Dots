@@ -1,17 +1,43 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "grid.h"
 
 unsigned char getUserInput()
 {
-    unsigned char userInput;
+    char userInput;
+    userInput = getchar();
+    
+    if (userInput == '\n')
+        userInput = getchar();
 
+    bool inputInGrid = (userInput >= '0' && userInput <= '9') ||
+                       (userInput >= 'A' && userInput <= 'Z') ||
+                       (userInput >= 'a' && userInput <= 'z');
+    
+    while (!inputInGrid)
+    {
+        printf("Please, choose a character from the grid!\n");
+        userInput = getchar();
+        
+        if (userInput == '\n')
+            userInput = getchar();
+        
+        inputInGrid = (userInput >= '0' && userInput <= '9') ||
+                      (userInput >= 'A' && userInput <= 'Z') ||
+                      (userInput >= 'a' && userInput <= 'z');
+    }
+    return userInput;
 }
+
 int main()
 {
-    unsigned char size = 7;
-    Grid gameGrid = createGrid(size);
-
-    initializeGrid(&gameGrid);
+    unsigned char size = 5;
+    // Grid gameGrid = createGrid(size);
+    char input = getUserInput();
+    printf("\n%d\n", input);
+    char input1 = getUserInput();
+    printf("\n%d\n", input1);
+    // initializeGrid(&gameGrid);
     // gameGrid.grid[0][1] = PLAYER1;
     // gameGrid.grid[2][1] = PLAYER2;
     // gameGrid.grid[1][0] = PLAYER2;
@@ -26,9 +52,9 @@ int main()
     // gameGrid.grid[1][5] = PLAYER1;
     // gameGrid.grid[1][6] = PLAYER2;
 
-    printGrid(gameGrid);
+    // printGrid(gameGrid);
 
-    freeGrid(&gameGrid);
+    // freeGrid(&gameGrid);
 
     return 0;
 }

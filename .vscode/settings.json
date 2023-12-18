@@ -4,6 +4,7 @@
         "ansi_colors.h": "c",
         "ANSI_COLORS.H": "cpp",
         "initialization.c": "cpp",
-        "printgrid.c": "cpp"
+        "printgrid.c": "cpp",
+        "stdlib.h": "c"
     }
 }

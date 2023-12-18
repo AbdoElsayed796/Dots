@@ -26,12 +26,12 @@ void initializeGrid(Grid *gameGrid)
 void printEvenRows(Grid gameGrid, int row)
 {
     for (int j = 0; j < gameGrid.size; j++)
-        if (j % 2 == 0)
+        if (j % 2 == 0)//* print DOTS
             if ((gameGrid.grid[row][j + 1] == PLAYER1) || (gameGrid.grid[row][j + 1] == PLAYER2))
                 printf(BHGRN "%c" RESET, gameGrid.grid[row][j]);
             else
                 printf(BHGRN "%-5c" RESET, gameGrid.grid[row][j]);
-        else
+        else //*print DASHES or Characters
         {
             switch (gameGrid.grid[row][j])
             {
@@ -52,12 +52,12 @@ void printOddRows(Grid gameGrid, int row)
 {
     for (int line = 0; line <= 2; line++)
     {
-        if (line % 2 == 0)
+        if (line % 2 == 0) 
         {
             printf("\t\t\t");
             for (int j = 0; j < gameGrid.size; j++)
             {
-                if (j % 2 == 0)
+                if (j % 2 == 0)//* prints vertical lines
                 {
                     if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))
                     {
@@ -85,7 +85,7 @@ void printOddRows(Grid gameGrid, int row)
             for (int j = 0; j < gameGrid.size; j++)
                 if (j % 2 == 0)
                 {
-                    if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))
+                    if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))//* prints vertical line
                     {
                         switch (gameGrid.grid[row][j])
                         {
@@ -98,11 +98,11 @@ void printOddRows(Grid gameGrid, int row)
                         }
                     }
                     else
-                        printf(BHYEL "%-5c" RESET, gameGrid.grid[row][j]);
+                        printf(BHYEL "%-5c" RESET, gameGrid.grid[row][j]);//* prints character
                 }
                 else
                 {
-                    switch (gameGrid.grid[row][j])
+                    switch (gameGrid.grid[row][j])//* prints box
                     {
                     case PLAYER1:
                         printf(BHBLU "%-5c" RESET, '1');
@@ -118,7 +118,7 @@ void printOddRows(Grid gameGrid, int row)
         printf("\n");
     }
 }
-void printGrid(Grid gameGrid)
+void printGrid(Grid gameGrid) //*even rows are printed once but odd rows are printed 3 times
 {
     printf("\n");
     for (int i = 0; i < gameGrid.size; i++)
