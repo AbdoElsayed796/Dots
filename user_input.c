@@ -1,21 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "user_input.h"
 #include "grid.h"
-#define MAX_INPUT_LENGTH 50
-#define MAX_NAME_LENGTH 50
-
-typedef struct
-{
-    char name[MAX_NAME_LENGTH];
-    int score;
-    char symbol;  // Player's symbol representation on the grid (e.g., 'X', 'O', etc.)
-    bool isHuman; // Flag indicating if the player is controlled by a human or AI
-    // Add other relevant members as needed...
-} Player;
 
 bool isValidGridInput(char userInput, char gridSize) //* validate user input based on grid size
-
 {
     bool inputInGrid;
 
@@ -34,7 +23,6 @@ bool isValidGridInput(char userInput, char gridSize) //* validate user input bas
         case 7:
             inputInGrid = (userInput >= '0' && userInput <= '9') || (userInput >= 'A' && userInput <= 'N');
             break;
-
         default:
             printf("Invalid grid size");
             exit(1);
@@ -74,7 +62,6 @@ void updateGridWithUserInput(Grid *gameGrid, Player currentTurn, char userInput)
     while (!charFound)
     {
         for (int i = 0; i < gameGrid->size; i++)
-        {
             if (i % 2 == 0)
             {
                 for (int j = 1; j < gameGrid->size; j += 2)
@@ -91,26 +78,11 @@ void updateGridWithUserInput(Grid *gameGrid, Player currentTurn, char userInput)
                         gameGrid->grid[i][j] = currentTurn.symbol;
                         charFound = true;
                     }
-        }
+
         if(!charFound)
         {
             printf("\nLine not available. Please choose another line.\n");
             userInput = getUserInput(gameGrid->size);
         }
     }
-}
-
-int main()
-{
-    unsigned char size = 5;
-    Grid gameGrid = createGrid(size);
-    initializeGrid(&gameGrid);
-    Player player;
-    player.symbol = PLAYER1;
-    printGrid(gameGrid);
-    updateGridWithUserInput(&gameGrid, player, getUserInput(gameGrid.size));
-    printGrid(gameGrid);
-    freeGrid(&gameGrid);
-
-    return 0;
 }
