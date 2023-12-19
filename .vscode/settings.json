@@ -1,11 +1,8 @@
 {
     "files.associations": {
-        "mIN.C": "cpp",
         "ansi_colors.h": "c",
-        "ANSI_COLORS.H": "cpp",
-        "initialization.c": "cpp",
-        "printgrid.c": "cpp",
         "stdlib.h": "c",
-        "grid.h": "c"
+        "grid.h": "c",
+        "user_input.h": "c"
     }
 }

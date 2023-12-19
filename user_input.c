@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "user_input.h"
-#include "grid.h"
 
 bool isValidGridInput(char userInput, char gridSize) //* validate user input based on grid size
 {
@@ -32,7 +31,7 @@ bool isValidGridInput(char userInput, char gridSize) //* validate user input bas
 unsigned char getUserInput(char gridSize)
 {
     char inputBuffer[MAX_INPUT_LENGTH];
-    fgets(inputBuffer, MAX_INPUT_LENGTH, stdin);
+    scanf("%s", inputBuffer);
 
     char userInput;
     if (inputBuffer[0] != '\n')
@@ -69,6 +68,7 @@ void updateGridWithUserInput(Grid *gameGrid, Player currentTurn, char userInput)
                     {
                         gameGrid->grid[i][j] = currentTurn.symbol;
                         charFound = true;
+                        return;
                     }
             }
             else
@@ -77,11 +77,12 @@ void updateGridWithUserInput(Grid *gameGrid, Player currentTurn, char userInput)
                     {
                         gameGrid->grid[i][j] = currentTurn.symbol;
                         charFound = true;
+                        return;
                     }
 
-        if(!charFound)
+        if (!charFound)
         {
-            printf("\nLine not available. Please choose another line.\n");
+            printf("\nLine was chosen before. Please choose another line.\n");
             userInput = getUserInput(gameGrid->size);
         }
     }

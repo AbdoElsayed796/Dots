@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "user_input.h"
-#include "grid.h"
 
 int main()
 {
@@ -11,7 +10,8 @@ int main()
     player.symbol = PLAYER1;
     printGrid(gameGrid);
     updateGridWithUserInput(&gameGrid, player, getUserInput(gameGrid.size));
+    printGrid(gameGrid);
     freeGrid(&gameGrid);
-
+        
     return 0;
 }

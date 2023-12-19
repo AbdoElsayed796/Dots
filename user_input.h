@@ -1,4 +1,6 @@
 #pragma once
+#include <stdbool.h>
+#include "grid.h"
 #define MAX_INPUT_LENGTH 50
 #define MAX_NAME_LENGTH 50
 
