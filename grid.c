@@ -141,7 +141,7 @@ Grid createGrid(unsigned char size)
     Grid newGrid;
     newGrid.size = size;
 
-    newGrid.grid = (unsigned char **)malloc(size * sizeof(unsigned char *));
+    newGrid.grid = (SmallNumber **)malloc(size * sizeof(SmallNumber *));
     if (newGrid.grid == NULL)
     {
         printf("Memory allocation failed. Exiting...\n");
@@ -150,7 +150,7 @@ Grid createGrid(unsigned char size)
 
     for (int i = 0; i < size; i++)
     {
-        newGrid.grid[i] = (unsigned char *)malloc(size * sizeof(unsigned char));
+        newGrid.grid[i] = (SmallNumber *)malloc(size * sizeof(SmallNumber));
         if (newGrid.grid[i] == NULL)
         {
             printf("Memory allocation failed. Exiting...\n");

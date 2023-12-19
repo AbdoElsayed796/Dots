@@ -3,6 +3,8 @@
         "ansi_colors.h": "c",
         "stdlib.h": "c",
         "grid.h": "c",
-        "user_input.h": "c"
+        "user_input.h": "c",
+        "stdbool.h": "c",
+        "stdio.h": "c"
     }
 }

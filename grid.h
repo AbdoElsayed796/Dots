@@ -1,5 +1,5 @@
 #pragma once
-
+typedef char SmallNumber;
 #define DOT '*'
 #define DASH '-'
 #define PLAYER1 1
@@ -9,7 +9,7 @@
 
 typedef struct
 {
-    unsigned char **grid;
+    SmallNumber **grid;
     unsigned char size;
 } Grid;
 
