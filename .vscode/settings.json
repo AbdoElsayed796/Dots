@@ -5,6 +5,7 @@
         "grid.h": "c",
         "user_input.h": "c",
         "stdbool.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "conio.h": "c"
     }
 }

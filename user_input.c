@@ -55,7 +55,7 @@ unsigned char getUserInput(char gridSize)
     return userInput;
 }
 
-void updateGridWithUserInput(Grid *gameGrid, Player currentTurn, char userInput)
+void updateGridWithUserInput(Grid *gameGrid, Player currentTurn , gameCounts *currentGame , char userInput)
 {
     bool charFound = false;
     while (!charFound)
@@ -67,7 +67,8 @@ void updateGridWithUserInput(Grid *gameGrid, Player currentTurn, char userInput)
                     if (gameGrid->grid[i][j] == userInput)
                     {
                         gameGrid->grid[i][j] = currentTurn.symbol;
-                        checkBoxesAroundLine(i, j, gameGrid, currentTurn.symbol);
+                        currentGame->remainingLines--;
+                        checkBoxesAroundLine(i, j, gameGrid, currentTurn.symbol,currentGame);
                         charFound = true;
                         return;
                     }
@@ -77,7 +78,8 @@ void updateGridWithUserInput(Grid *gameGrid, Player currentTurn, char userInput)
                     if (gameGrid->grid[i][j] == userInput)
                     {
                         gameGrid->grid[i][j] = currentTurn.symbol;
-                        checkBoxesAroundLine(i, j, gameGrid, currentTurn.symbol);
+                         currentGame->remainingLines--;
+                        checkBoxesAroundLine(i, j, gameGrid, currentTurn.symbol,currentGame);
                         charFound = true;
                         return;
                     }

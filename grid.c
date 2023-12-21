@@ -106,7 +106,7 @@ void printCharacterOrBox(Grid gameGrid, int row)
     }
 }
 
-void printGrid(Grid gameGrid)
+void printGrid(Grid gameGrid,gameCounts *currentGame)
 {
     printf("\n");
     for (int i = 0; i < gameGrid.size; i++)
@@ -129,6 +129,11 @@ void printGrid(Grid gameGrid)
         }
     }
     printf("\n\n");
+    printf(MAG"\t\t\tNumber OF Remaining Lines is : %d\n\n"RESET,currentGame->remainingLines);
+    printf(GRN"\t\t\tNumber OF Remaining Boxes is : %d\n\n"RESET,currentGame->remainingBoxes);
+    printf(BHBLU"\t\t\tPoints Of Player1 is : %d\n\n"RESET,currentGame->scoreOfPlayer1);
+    printf(BHRED"\t\t\tPoints OF Player2 is : %d\n\n"RESET,currentGame->scoreOfPlayer2);
+
 }
 
 Grid createGrid(SmallNumber size)

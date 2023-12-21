@@ -14,4 +14,4 @@ typedef struct
 } Player;
 
 unsigned char getUserInput(char gridSize);
-void updateGridWithUserInput(Grid *gameGrid, Player currentTurn, char userInput);
+void updateGridWithUserInput(Grid *gameGrid, Player currentTurn,gameCounts *currentGame, char userInput);

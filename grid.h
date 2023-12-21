@@ -1,4 +1,6 @@
+
 #pragma once
+
 #define DOT '*'
 #define DASH '-'
 #define PLAYER1 1
@@ -12,8 +14,15 @@ typedef struct
     unsigned char **grid;
     SmallNumber size;
 } Grid;
+typedef struct
+{
+ int scoreOfPlayer1;
+ int scoreOfPlayer2;
+ int remainingLines;
+ int remainingBoxes;
 
+}gameCounts;
 void initializeGrid(Grid *gameGrid);
-void printGrid(Grid gameGrid);
+void printGrid(Grid gameGrid,gameCounts *currentGame);
 Grid createGrid(SmallNumber size);
 void freeGrid(Grid *gameGrid); // Deallocate memory used by the game grid
