@@ -23,16 +23,15 @@ void initializeGrid(Grid *gameGrid)
             }
 }
 
-void printEvenRows(Grid gameGrid, int row)
+void printDotsRow(Grid gameGrid, int row)
 {
     for (int j = 0; j < gameGrid.size; j++)
-        if (j % 2 == 0)//* print DOTS
+        if (j % 2 == 0)
             if ((gameGrid.grid[row][j + 1] == PLAYER1) || (gameGrid.grid[row][j + 1] == PLAYER2))
                 printf(BHGRN "%c" RESET, gameGrid.grid[row][j]);
             else
                 printf(BHGRN "%-5c" RESET, gameGrid.grid[row][j]);
-        else //*print DASHES or Characters
-        {
+        else
             switch (gameGrid.grid[row][j])
             {
             case PLAYER1:
@@ -46,102 +45,98 @@ void printEvenRows(Grid gameGrid, int row)
             default:
                 printf(BHYEL "%-5c" RESET, gameGrid.grid[row][j]);
             }
-        }
 }
-void printOddRows(Grid gameGrid, int row)
+
+void printVerticalLines(Grid gameGrid, int row)
 {
-    for (int line = 0; line <= 2; line++)
+    for (int j = 0; j < gameGrid.size; j++)
     {
-        if (line % 2 == 0) 
+        if (j % 2 == 0)
         {
-            printf("\t\t\t");
-            for (int j = 0; j < gameGrid.size; j++)
+            if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))
             {
-                if (j % 2 == 0)//* prints vertical lines or spaces
+                switch (gameGrid.grid[row][j])
                 {
-                    if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))
-                    {
-                        switch (gameGrid.grid[row][j])
-                        {
-                        case PLAYER1:
-                            printf(BHBLU "%c" RESET, '|');
-                            break;
-                        case PLAYER2:
-                            printf(BHRED "%c" RESET, '|');
-                            break;
-                        }
-                    }
-                    if (j % 2 == 0)
-                        if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))
-                            printf("%-9c", ' ');
-                        else
-                            printf("%-10c", ' ');
+                case PLAYER1:
+                    printf(BHBLU "%c" RESET, '|');
+                    break;
+                case PLAYER2:
+                    printf(BHRED "%c" RESET, '|');
+                    break;
                 }
             }
+
+            if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))
+                printf("%-9c", ' ');
+            else
+                printf("%-10c", ' ');
         }
-        else
-        {
-            printf("\t\t\t");
-            for (int j = 0; j < gameGrid.size; j++)
-                if (j % 2 == 0)
-                {
-                    if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))//* prints vertical line
-                    {
-                        switch (gameGrid.grid[row][j])
-                        {
-                        case PLAYER1:
-                            printf(BHBLU "%-5c" RESET, '|');
-                            break;
-                        case PLAYER2:
-                            printf(BHRED "%-5c" RESET, '|');
-                            break;
-                        }
-                    }
-                    else
-                        printf(BHYEL "%-5c" RESET, gameGrid.grid[row][j]);//* prints character
-                }
-                else
-                {
-                    switch (gameGrid.grid[row][j])//* prints box
-                    {
-                    case PLAYER1:
-                        printf(BHBLU "%-5c" RESET, '1');
-                        break;
-                    case PLAYER2:
-                        printf(BHRED "%-5c" RESET, '2');
-                        break;
-                    default:
-                        printf(BHRED "%-5c" RESET, ' ');
-                    }
-                }
-        }
-        printf("\n");
     }
 }
-void printGrid(Grid gameGrid) 
+
+void printCharacterOrBox(Grid gameGrid, int row)
+{
+    for (int j = 0; j < gameGrid.size; j++)
+    {
+        if (j % 2 == 0) // print vertical character or whitespace
+            if ((gameGrid.grid[row][j] == PLAYER1) || (gameGrid.grid[row][j] == PLAYER2))
+                switch (gameGrid.grid[row][j])
+                {
+                case PLAYER1:
+                    printf(BHBLU "%-5c" RESET, '|');
+                    break;
+                case PLAYER2:
+                    printf(BHRED "%-5c" RESET, '|');
+                    break;
+                }
+            else
+                printf(BHYEL "%-5c" RESET, gameGrid.grid[row][j]);
+        else // print box
+            switch (gameGrid.grid[row][j])
+            {
+            case PLAYER1:
+                printf(BHBLU "%-5c" RESET, '1');
+                break;
+            case PLAYER2:
+                printf(BHRED "%-5c" RESET, '2');
+                break;
+            default:
+                printf(BHRED "%-5c" RESET, ' ');
+            }
+    }
+}
+
+void printGrid(Grid gameGrid)
 {
     printf("\n");
-    for (int i = 0; i < gameGrid.size; i++) //*even rows are printed once but odd rows are printed 3 times
+    for (int i = 0; i < gameGrid.size; i++)
+    {
+        printf("\t\t\t");
         if (i % 2 == 0)
-        {
-            printf("\t\t\t");
-            printEvenRows(gameGrid, i);
-        }
+            printDotsRow(gameGrid, i);
         else
         {
-            printf("\t\t\t");
             printf("\n");
-            printOddRows(gameGrid, i);
+            for (int line = 0; line <= 2; line++)
+            {
+                printf("\t\t\t");
+                if (line % 2 == 0)
+                    printVerticalLines(gameGrid, i);
+                else
+                    printCharacterOrBox(gameGrid, i);
+                printf("\n");
+            }
         }
+    }
     printf("\n\n");
 }
 
-Grid createGrid(unsigned char size)
+Grid createGrid(SmallNumber size)
 {
     Grid newGrid;
     newGrid.size = size;
 
-    newGrid.grid = (SmallNumber **)malloc(size * sizeof(SmallNumber *));
+    newGrid.grid = (unsigned char **)malloc(size * sizeof(unsigned char *));
     if (newGrid.grid == NULL)
     {
         printf("Memory allocation failed. Exiting...\n");
@@ -150,7 +145,7 @@ Grid createGrid(unsigned char size)
 
     for (int i = 0; i < size; i++)
     {
-        newGrid.grid[i] = (SmallNumber *)malloc(size * sizeof(SmallNumber));
+        newGrid.grid[i] = (unsigned char *)malloc(size * sizeof(unsigned char));
         if (newGrid.grid[i] == NULL)
         {
             printf("Memory allocation failed. Exiting...\n");
@@ -160,10 +155,11 @@ Grid createGrid(unsigned char size)
 
     return newGrid;
 }
+
 void freeGrid(Grid *gameGrid)
 {
-    for (int i = 0; i < gameGrid->size; i++)
+    for (int i = 0; i < gameGrid->size; i++) // Free memory for each row in the grid
         free(gameGrid->grid[i]);
 
-    free(gameGrid->grid);
+    free(gameGrid->grid); // Free the memory allocated for the grid itself
 }

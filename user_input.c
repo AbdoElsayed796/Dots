@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "user_input.h"
+#include "game_logic.h"
 
 bool isValidGridInput(char userInput, char gridSize) //* validate user input based on grid size
 {
@@ -67,6 +67,7 @@ void updateGridWithUserInput(Grid *gameGrid, Player currentTurn, char userInput)
                     if (gameGrid->grid[i][j] == userInput)
                     {
                         gameGrid->grid[i][j] = currentTurn.symbol;
+                        checkBoxesAroundLine(i, j, gameGrid, currentTurn.symbol);
                         charFound = true;
                         return;
                     }
@@ -76,6 +77,7 @@ void updateGridWithUserInput(Grid *gameGrid, Player currentTurn, char userInput)
                     if (gameGrid->grid[i][j] == userInput)
                     {
                         gameGrid->grid[i][j] = currentTurn.symbol;
+                        checkBoxesAroundLine(i, j, gameGrid, currentTurn.symbol);
                         charFound = true;
                         return;
                     }
