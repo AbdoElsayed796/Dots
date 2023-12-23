@@ -1,4 +1,5 @@
 #pragma once
+#include<time.h>
 #include <stdbool.h>
 #include "game_definitions.h"
 
