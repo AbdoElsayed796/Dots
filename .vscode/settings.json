@@ -6,6 +6,7 @@
         "user_input.h": "c",
         "stdbool.h": "c",
         "stdio.h": "c",
-        "conio.h": "c"
+        "conio.h": "c",
+        "game_definitions.h": "c"
     }
 }

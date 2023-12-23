@@ -1,22 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "user_input.h"
+#include "grid.h"
 
-
-void turns(Grid *gameGrid , gameCounts *currentGame, int remainingLines)
-{  
+void turns(Grid *gameGrid, gameState *currentGame, int remainingLines)
+{
     Player player1, player2;
     player1.symbol = PLAYER1;
     player2.symbol = PLAYER2;
-  while (remainingLines>0)
-  {
-      updateGridWithUserInput(gameGrid, player2,currentGame, getUserInput(gameGrid->size));
-        printGrid(*gameGrid,currentGame);
-        updateGridWithUserInput(gameGrid, player1,currentGame, getUserInput(gameGrid->size));
-        printGrid(*gameGrid,currentGame);
+    currentGame->CurrentTurn = enPLAYER_1;
+
+    printGrid((*gameGrid), currentGame);
+    while (remainingLines >= 0)
+    {
+        switch (currentGame->CurrentTurn)
+        {
+        case enPLAYER_1:
+            updateGridWithUserInput(gameGrid, player1, currentGame, getUserInput(gameGrid->size));
+            printGrid((*gameGrid), currentGame);
+            break;
+        case enPLAYER_2:
+            updateGridWithUserInput(gameGrid, player2, currentGame, getUserInput(gameGrid->size));
+            printGrid((*gameGrid), currentGame);
+            break;
+        }
         remainingLines--;
-  }  
+    }
+
 }
 
 SmallNumber countBoxSides(int i, int j, Grid *gameGrid) //* returns number of closed sides around a box
@@ -50,67 +60,81 @@ void markBoxSides(int i, int j, Grid *gameGrid, char playerSymbol)
         gameGrid->grid[row][column] = playerSymbol;
     }
 }
-void checkAndMarkClosedBox(int i, int j, Grid *gameGrid, char playerSymbol,gameCounts *currentGame)
+bool checkAndMarkClosedBox(int i, int j, Grid *gameGrid, char playerSymbol, gameState *currentGame)
 {
     if (countBoxSides(i, j, gameGrid) == 4)
     {
         gameGrid->grid[i][j] = playerSymbol;
         markBoxSides(i, j, gameGrid, playerSymbol);
-         currentGame->remainingBoxes--;
-         switch(playerSymbol)
-           {
-             case 1:
-             currentGame->scoreOfPlayer1++;
-             break;
-             case 2:
-             currentGame->scoreOfPlayer2++;
-             break;
-           }
+        currentGame->remainingBoxes--;
+        switch (playerSymbol)
+        {
+        case PLAYER1:
+            currentGame->scoreOfPlayer1++;
+            break;
+        case PLAYER2:
+            currentGame->scoreOfPlayer2++;
+            break;
+        }
+        return true;
     }
-   
+    return false;
 }
-void checkBoxesAroundLine(int i, int j, Grid *gameGrid, char playerSymbol,gameCounts *currentGame)
+void checkBoxesAroundLine(int i, int j, Grid *gameGrid, char playerSymbol, gameState *currentGame)
 {
+    bool closedABox = false;
     if (i % 2 == 0)
     {
         if (i == 0)
-            checkAndMarkClosedBox(i + 1, j, gameGrid, playerSymbol,currentGame);
+            closedABox |= checkAndMarkClosedBox(i + 1, j, gameGrid, playerSymbol, currentGame);
         else if (i == gameGrid->size - 1)
-            checkAndMarkClosedBox(i - 1, j, gameGrid, playerSymbol,currentGame);
+            closedABox |= checkAndMarkClosedBox(i - 1, j, gameGrid, playerSymbol, currentGame);
         else
         {
-            checkAndMarkClosedBox(i + 1, j, gameGrid, playerSymbol,currentGame);
-            checkAndMarkClosedBox(i - 1, j, gameGrid, playerSymbol,currentGame);
+            closedABox |= checkAndMarkClosedBox(i + 1, j, gameGrid, playerSymbol, currentGame);
+            closedABox |= checkAndMarkClosedBox(i - 1, j, gameGrid, playerSymbol, currentGame);
         }
     }
     else
     {
         if (j == 0)
-            checkAndMarkClosedBox(i, j + 1, gameGrid, playerSymbol,currentGame);
+            closedABox |= checkAndMarkClosedBox(i, j + 1, gameGrid, playerSymbol, currentGame);
         else if (i == gameGrid->size - 1)
-            checkAndMarkClosedBox(i, j - 1, gameGrid, playerSymbol,currentGame);
+            closedABox |= checkAndMarkClosedBox(i, j - 1, gameGrid, playerSymbol, currentGame);
         else
         {
-            checkAndMarkClosedBox(i, j - 1, gameGrid, playerSymbol,currentGame);
-            checkAndMarkClosedBox(i, j + 1, gameGrid, playerSymbol,currentGame);
+            closedABox |= checkAndMarkClosedBox(i, j - 1, gameGrid, playerSymbol, currentGame);
+            closedABox |= checkAndMarkClosedBox(i, j + 1, gameGrid, playerSymbol, currentGame);
+        }
+    }
+    if (!closedABox)
+    {
+        switch (currentGame->CurrentTurn)
+        {
+        case enPLAYER_1:
+            currentGame->CurrentTurn = enPLAYER_2;
+            break;
+        case enPLAYER_2:
+            currentGame->CurrentTurn = enPLAYER_1;
+            break;
         }
     }
 }
 
 int main()
-{   
+{
 
-    unsigned char size = 7;
-    Grid gameGrid = createGrid(size);
+    unsigned char size = 3;
+    Grid gameGrid = createGrid(2*size - 1);
     initializeGrid(&gameGrid);
 
-    gameCounts currentGame;
-    currentGame.scoreOfPlayer1=0;
-    currentGame.scoreOfPlayer2=0;
-    currentGame.remainingLines=((size-1)/2)*(((size-1)/2)+1)*2;
-    currentGame.remainingBoxes=pow(((size-1)/2),2);
-    printGrid(gameGrid,&currentGame);
-    turns(&gameGrid,&currentGame,currentGame.remainingLines-1);
+    gameState currentGame;
+    currentGame.scoreOfPlayer1 = 0;
+    currentGame.scoreOfPlayer2 = 0;
+    currentGame.remainingLines = (2*size)*(size - 1);
+    currentGame.remainingBoxes = size * size;
+    printGrid(gameGrid, &currentGame);
+    turns(&gameGrid, &currentGame, currentGame.remainingLines - 1);
     freeGrid(&gameGrid);
 
     return 0;

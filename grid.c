@@ -3,6 +3,10 @@
 #include "ansi_colors.h"
 #include "grid.h" //Include header file defining Grid structure and constants
 
+void clearConsole()
+{
+    printf("\e[1;1H\e[2J"); // ANSI escape code to clear the console
+}
 void initializeGrid(Grid *gameGrid)
 {
     unsigned char ch = '0';
@@ -106,12 +110,13 @@ void printCharacterOrBox(Grid gameGrid, int row)
     }
 }
 
-void printGrid(Grid gameGrid,gameCounts *currentGame)
+void printGrid(Grid gameGrid, gameState *currentGame)
 {
+    clearConsole();
     printf("\n");
     for (int i = 0; i < gameGrid.size; i++)
     {
-        printf("\t\t\t");
+        printf("\t\t\t\t\t");
         if (i % 2 == 0)
             printDotsRow(gameGrid, i);
         else
@@ -119,7 +124,7 @@ void printGrid(Grid gameGrid,gameCounts *currentGame)
             printf("\n");
             for (int line = 0; line <= 2; line++)
             {
-                printf("\t\t\t");
+                printf("\t\t\t\t\t");
                 if (line % 2 == 0)
                     printVerticalLines(gameGrid, i);
                 else
@@ -129,11 +134,19 @@ void printGrid(Grid gameGrid,gameCounts *currentGame)
         }
     }
     printf("\n\n");
-    printf(MAG"\t\t\tNumber OF Remaining Lines is : %d\n\n"RESET,currentGame->remainingLines);
-    printf(GRN"\t\t\tNumber OF Remaining Boxes is : %d\n\n"RESET,currentGame->remainingBoxes);
-    printf(BHBLU"\t\t\tPoints Of Player1 is : %d\n\n"RESET,currentGame->scoreOfPlayer1);
-    printf(BHRED"\t\t\tPoints OF Player2 is : %d\n\n"RESET,currentGame->scoreOfPlayer2);
-
+    printf(GRN "Number OF Remaining Boxes is : %d" RESET, currentGame->remainingBoxes);
+    printf(BHBLU "\tPoints Of Player1 is : %d\n" RESET, currentGame->scoreOfPlayer1);
+    printf(MAG "Number OF Remaining Lines is : %d" RESET, currentGame->remainingLines);
+    printf(BHRED "\tPoints OF Player2 is : %d\n\n" RESET, currentGame->scoreOfPlayer2);
+    switch (currentGame->CurrentTurn)
+    {
+    case enPLAYER_1:
+        printf("\t\t\t\t\t" BHBLU "Player 1 turn" RESET "\n\t\t\t\t\t");
+        break;
+    case enPLAYER_2:
+        printf("\t\t\t\t\t" BHRED "Player 2 turn" RESET "\n\t\t\t\t\t");
+        break;
+    }
 }
 
 Grid createGrid(SmallNumber size)

@@ -55,10 +55,9 @@ unsigned char getUserInput(char gridSize)
     return userInput;
 }
 
-void updateGridWithUserInput(Grid *gameGrid, Player currentTurn , gameCounts *currentGame , char userInput)
+void updateGridWithUserInput(Grid *gameGrid, Player player, gameState *currentGame, char userInput)
 {
-    bool charFound = false;
-    while (!charFound)
+    while (1)
     {
         for (int i = 0; i < gameGrid->size; i++)
             if (i % 2 == 0)
@@ -66,10 +65,9 @@ void updateGridWithUserInput(Grid *gameGrid, Player currentTurn , gameCounts *cu
                 for (int j = 1; j < gameGrid->size; j += 2)
                     if (gameGrid->grid[i][j] == userInput)
                     {
-                        gameGrid->grid[i][j] = currentTurn.symbol;
+                        gameGrid->grid[i][j] = player.symbol;
                         currentGame->remainingLines--;
-                        checkBoxesAroundLine(i, j, gameGrid, currentTurn.symbol,currentGame);
-                        charFound = true;
+                        checkBoxesAroundLine(i, j, gameGrid, player.symbol, currentGame);
                         return;
                     }
             }
@@ -77,17 +75,13 @@ void updateGridWithUserInput(Grid *gameGrid, Player currentTurn , gameCounts *cu
                 for (int j = 0; j < gameGrid->size; j += 2)
                     if (gameGrid->grid[i][j] == userInput)
                     {
-                        gameGrid->grid[i][j] = currentTurn.symbol;
-                         currentGame->remainingLines--;
-                        checkBoxesAroundLine(i, j, gameGrid, currentTurn.symbol,currentGame);
-                        charFound = true;
+                        gameGrid->grid[i][j] = player.symbol;
+                        currentGame->remainingLines--;
+                        checkBoxesAroundLine(i, j, gameGrid, player.symbol, currentGame);
                         return;
                     }
 
-        if (!charFound)
-        {
-            printf("\nLine was chosen before. Please choose another line.\n");
-            userInput = getUserInput(gameGrid->size);
-        }
+        printf("\nLine was chosen before. Please choose another line.\n");
+        userInput = getUserInput(gameGrid->size);
     }
 }
