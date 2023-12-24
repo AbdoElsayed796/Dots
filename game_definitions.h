@@ -7,6 +7,8 @@
 #define DASH '-'
 #define PLAYER1 1
 #define PLAYER2 2
+#define SCOREBOARD_FILE "scoreboard.txt"
+
 typedef char SmallNumber;
 
 typedef enum
@@ -33,6 +35,5 @@ typedef struct
     char name[MAX_NAME_LENGTH];
     int score;
     char symbol;
-    bool isHuman; // Flag indicating if the player is controlled by a human or AI
-    // Add other relevant members as needed...
+    bool newPlayer;
 } Player;
