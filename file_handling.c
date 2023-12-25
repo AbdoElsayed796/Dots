@@ -1,12 +1,12 @@
-#include <stdio.h>
+#include<stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include "game_definitions.h"
 #include "grid.h"
 #include "ansi_colors.h"
-#include "undo_redo.h"
 
+    //* Dealing with files
 Player findPlayer(char *playerName)
 {
     FILE *ptrFile = fopen(SCOREBOARD_FILE, "r");
@@ -43,7 +43,6 @@ Player findPlayer(char *playerName)
         return player;
     }
 }
-
 void addPlayerToScoreboard(Player *player)
 {
     FILE *ptrFile = fopen(SCOREBOARD_FILE, "a");
@@ -52,21 +51,6 @@ void addPlayerToScoreboard(Player *player)
     else
         printf("Error: Unable to open the scoreboard file in append mode.\n");
 }
-
-void printLeaderboardTitle()
-{
-    clearConsole();
-    printf(BHYEL " __        ________   ______   _______   ________  _______   _______    ______    ______   _______   _______  \n");
-    printf("|  \\      |        \\ /      \\ |       \\ |        \\|       \\ |       \\  /      \\  /      \\ |       \\ |       \\ \n");
-    printf("| $$      | $$$$$$$$|  $$$$$$\\| $$$$$$$\\| $$$$$$$$| $$$$$$$\\| $$$$$$$\\|  $$$$$$\\|  $$$$$$\\| $$$$$$$\\| $$$$$$$\\ \n");
-    printf("| $$      | $$__    | $$__| $$| $$  | $$| $$__    | $$__| $$| $$__/ $$| $$  | $$| $$__| $$| $$  | $$| $$  | $$\n");
-    printf("| $$      | $$  \\   | $$    $$| $$  | $$| $$  \\   | $$    $$| $$    $$| $$  | $$| $$    $$| $$  | $$| $$  | $$\n");
-    printf("| $$      | $$$$$   | $$$$$$$$| $$  | $$| $$$$$   | $$$$$$$\\| $$$$$$$\\| $$  | $$| $$$$$$$$| $$$$$$$\\| $$  | $$\n");
-    printf("| $$_____ | $$_____ | $$  | $$| $$__/ $$| $$_____ | $$  | $$| $$__/ $$| $$__/ $$| $$  | $$| $$  | $$| $$__/ $$\n");
-    printf("| $$     \\| $$     \\| $$  | $$| $$    $$| $$     \\| $$  | $$| $$    $$ \\$$    $$| $$  | $$| $$  | $$| $$    $$\n");
-    printf(" \\$$$$$$$$ \\$$$$$$$$ \\$$   \\$$ \\$$$$$$$  \\$$$$$$$$ \\$$   \\$$ \\$$$$$$$   \\$$$$$$  \\$$   \\$$ \\$$   \\$$ \\$$$$$$$\n" RESET);
-}
-
 short loadPlayersFromFile(Player **players)
 {
     FILE *ptrFile = fopen(SCOREBOARD_FILE, "r");
@@ -106,6 +90,69 @@ short loadPlayersFromFile(Player **players)
     return playersCount;
 }
 
+//* Printing titles
+void printLeaderboardTitle()
+{
+    clearConsole();
+    printf(BHYEL " __        ________   ______   _______   ________  _______   _______    ______    ______   _______   _______  \n");
+    printf("|  \\      |        \\ /      \\ |       \\ |        \\|       \\ |       \\  /      \\  /      \\ |       \\ |       \\ \n");
+    printf("| $$      | $$$$$$$$|  $$$$$$\\| $$$$$$$\\| $$$$$$$$| $$$$$$$\\| $$$$$$$\\|  $$$$$$\\|  $$$$$$\\| $$$$$$$\\| $$$$$$$\\ \n");
+    printf("| $$      | $$__    | $$__| $$| $$  | $$| $$__    | $$__| $$| $$__/ $$| $$  | $$| $$__| $$| $$  | $$| $$  | $$\n");
+    printf("| $$      | $$  \\   | $$    $$| $$  | $$| $$  \\   | $$    $$| $$    $$| $$  | $$| $$    $$| $$  | $$| $$  | $$\n");
+    printf("| $$      | $$$$$   | $$$$$$$$| $$  | $$| $$$$$   | $$$$$$$\\| $$$$$$$\\| $$  | $$| $$$$$$$$| $$$$$$$\\| $$  | $$\n");
+    printf("| $$_____ | $$_____ | $$  | $$| $$__/ $$| $$_____ | $$  | $$| $$__/ $$| $$__/ $$| $$  | $$| $$  | $$| $$__/ $$\n");
+    printf("| $$     \\| $$     \\| $$  | $$| $$    $$| $$     \\| $$  | $$| $$    $$ \\$$    $$| $$  | $$| $$  | $$| $$    $$\n");
+    printf(" \\$$$$$$$$ \\$$$$$$$$ \\$$   \\$$ \\$$$$$$$  \\$$$$$$$$ \\$$   \\$$ \\$$$$$$$   \\$$$$$$  \\$$   \\$$ \\$$   \\$$ \\$$$$$$$\n" RESET);
+}
+void printTop10Title()
+{
+    clearConsole();
+
+    printf(BHYEL "\t\t\t ________   ______   _______           __    ______  \n");
+    printf("\t\t\t|        \\ /      \\ |       \\        _/  \\  /      \\ \n");
+    printf("\t\t\t \\$$$$$$$$|  $$$$$$\\| $$$$$$$\\      |   $$ |  $$$$$$\\\n");
+    printf("\t\t\t   | $$   | $$  | $$| $$__/ $$       \\$$$$ | $$$\\| $$\n");
+    printf("\t\t\t   | $$   | $$  | $$| $$    $$        | $$ | $$$$\\ $$\n");
+    printf("\t\t\t   | $$   | $$  | $$| $$$$$$$         | $$ | $$\\$$\\$$\n");
+    printf("\t\t\t   | $$   | $$__/ $$| $$             _| $$_| $$_\\$$$$\n");
+    printf("\t\t\t   | $$    \\$$    $$| $$            |   $$ \\\\$$  \\$$$\n");
+    printf("\t\t\t    \\$$     \\$$$$$$  \\$$             \\$$$$$$ \\$$$$$$ \n" RESET);
+}
+
+//* Printing players
+void printFirstThreePlayers(Player *players)
+{
+    printf("\t\t\t\t  |" BHYEL "FIRST: %-14s " RESET "|" BHYEL " %5d " RESET "|\n", players[0].name, players[1].score);
+    printf("\t\t\t\t  |" BHYEL "SECOND: %-13s " RESET "|" BHYEL " %5d " RESET "|\n", players[1].name, players[3].score);
+    printf("\t\t\t\t  |" BHYEL "THIRD: %-14s " RESET "|" BHYEL " %5d " RESET "|\n", players[2].name, players[3].score);
+}
+void printPlayers(Player *players, short playersCount)
+{
+    printf("\t\t\t\t  +----------------------+-------+\n");
+    printf("\t\t\t\t  |" BHCYN " Player" RESET "               |" BHRED " Score " RESET "|\n");
+    printf("\t\t\t\t  +----------------------+-------+\n");
+    printFirstThreePlayers(players);
+    for (int i = 3; i < playersCount; i++)
+    {
+        printf("\t\t\t\t  |" HCYN " %-20s " RESET "|" HRED " %5d " RESET "|\n", players[i].name, players[i].score);
+    }
+    printf("\t\t\t\t  +----------------------+-------+\n");
+}
+
+void printLeaderboard(Player *players, short playersCount)
+{
+    printLeaderboardTitle();
+    printPlayers(players, playersCount);
+}
+void printTop10(Player *players, short playersCount)
+{
+    printTop10Title();
+    if (playersCount <= 10)
+        printPlayers(players, playersCount);
+    else
+        printPlayers(players, 10);
+}
+
 int scoreComparator(const void *x, const void *y)
 {
     Player *player1 = (Player *)x;
@@ -113,47 +160,30 @@ int scoreComparator(const void *x, const void *y)
 
     return -1 * ((player1->score) - (player2->score));
 }
-
-void printFirstThreePlayers(Player *players)
-{
-    printf("\t\t\t\t  |" BHYEL "FIRST: %-14s " RESET "|" BHYEL " %5d " RESET "|\n", players[0].name, players[1].score);
-    printf("\t\t\t\t  |" BHYEL "SECOND: %-13s " RESET "|" BHYEL " %5d " RESET "|\n", players[1].name, players[3].score);
-    printf("\t\t\t\t  |" BHYEL "THIRD: %-14s " RESET "|" BHYEL " %5d " RESET "|\n", players[2].name, players[3].score);
-}
-
-void printLeaderboard(Player *players, short playersCount)
-{
-    printLeaderboardTitle();
-    printf("\t\t\t\t  +----------------------+-------+\n");
-    printf("\t\t\t\t  | Player               | Score |\n");
-    printf("\t\t\t\t  +----------------------+-------+\n");
-    printFirstThreePlayers(players);
-    for (int i = 3; i < playersCount; i++)
-    {
-        printf("\t\t\t\t  | %-20s | %5d |\n", players[i].name, players[i].score);
-    }
-    printf("\t\t\t\t  +----------------------+-------+\n");
-}
-
-void leaderboard()
+void leaderboard(void (*whatToPrint)(Player *, short))
 {
     Player *players;
     short playersCount = loadPlayersFromFile(&players);
     qsort(players, playersCount, sizeof(Player), scoreComparator);
-    printLeaderboard(players, playersCount);
+
+    if (whatToPrint == &printTop10)
+        printTop10(players, playersCount);
+    else if (whatToPrint == &printLeaderboard)
+        printLeaderboard(players, playersCount);
+
     free(players); // Free dynamically allocated memory
 }
 
 int main()
 {
     Player player;
-   // scanf("%s", player.name);
-   // player = findPlayer(player.name);
-    //printf("Player: %s\nScore: %d", player.name, player.score);
-    //if (player.newPlayer == true)
-       // addPlayerToScoreboard(&player);
-    //leaderboard();
-  
+    // scanf("%s", player.name);
+    // player = findPlayer(player.name);
+    // printf("Player: %s\nScore: %d", player.name, player.score);
+    // if (player.newPlayer == true)
+    // addPlayerToScoreboard(&player);
+    // leaderboard();
+
     unsigned char size = 3;
     Grid gameGrid = createGrid(2 * size - 1);
     initializeGrid(&gameGrid);
@@ -161,36 +191,29 @@ int main()
     currentGame.scoreOfPlayer1 = 0;
     currentGame.scoreOfPlayer2 = 0;
     currentGame.remainingLines = (2 * size) * (size - 1);
-    currentGame.remainingBoxes = (size-1) * (size-1);  
-    
+    currentGame.remainingBoxes = (size - 1) * (size - 1);
+
     gameTurn dataOfTurns[currentGame.remainingLines];
-    gameTurn*ptrTurn=dataOfTurns; 
+    gameTurn *ptrTurn = dataOfTurns;
 
-     
-    turns(&gameGrid, &currentGame, currentGame.remainingLines - 1,ptrTurn);
+    turns(&gameGrid, &currentGame, currentGame.remainingLines - 1, ptrTurn);
     printf("check of undo and redo\n");
-   
-       
-           undo(ptrTurn,&gameGrid,&currentGame);
-           undo(ptrTurn,&gameGrid,&currentGame);
-            undo(ptrTurn,&gameGrid,&currentGame);
-             undo(ptrTurn,&gameGrid,&currentGame);
 
-           printGrid(gameGrid,&currentGame) ;
-  
-  
+    undo(ptrTurn, &gameGrid, &currentGame);
+    undo(ptrTurn, &gameGrid, &currentGame);
+    undo(ptrTurn, &gameGrid, &currentGame);
+    undo(ptrTurn, &gameGrid, &currentGame);
 
-        printf("%c\n",ptrTurn->chosen);
-        printf("%d\n",ptrTurn->i);
-        printf("%d\n",ptrTurn->j);
-        ptrTurn--;
-        printf("%c\n",ptrTurn->chosen);
-        printf("%d\n",ptrTurn->i);
-        printf("%d\n",ptrTurn->j);
+    printGrid(gameGrid, &currentGame);
 
+    printf("%c\n", ptrTurn->chosen);
+    printf("%d\n", ptrTurn->i);
+    printf("%d\n", ptrTurn->j);
+    ptrTurn--;
+    printf("%c\n", ptrTurn->chosen);
+    printf("%d\n", ptrTurn->i);
+    printf("%d\n", ptrTurn->j);
 
-
-   
     freeGrid(&gameGrid);
 
     return 0;
