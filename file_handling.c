@@ -162,13 +162,35 @@ int main()
     currentGame.scoreOfPlayer2 = 0;
     currentGame.remainingLines = (2 * size) * (size - 1);
     currentGame.remainingBoxes = (size-1) * (size-1);  
+    
     gameTurn dataOfTurns[currentGame.remainingLines];
     gameTurn*ptrTurn=dataOfTurns; 
 
      
     turns(&gameGrid, &currentGame, currentGame.remainingLines - 1,ptrTurn);
-   // undo(ptrTurn,&gameGrid,&currentGame);
-    printGrid(gameGrid,&currentGame);
+    printf("check of undo and redo\n");
+   
+       
+           undo(ptrTurn,&gameGrid,&currentGame);
+           undo(ptrTurn,&gameGrid,&currentGame);
+            undo(ptrTurn,&gameGrid,&currentGame);
+             undo(ptrTurn,&gameGrid,&currentGame);
+
+           printGrid(gameGrid,&currentGame) ;
+  
+  
+
+        printf("%c\n",ptrTurn->chosen);
+        printf("%d\n",ptrTurn->i);
+        printf("%d\n",ptrTurn->j);
+        ptrTurn--;
+        printf("%c\n",ptrTurn->chosen);
+        printf("%d\n",ptrTurn->i);
+        printf("%d\n",ptrTurn->j);
+
+
+
+   
     freeGrid(&gameGrid);
 
     return 0;

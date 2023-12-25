@@ -9,6 +9,7 @@
         "conio.h": "c",
         "game_definitions.h": "c",
         "time.h": "c",
-        "game_logic.h": "c"
+        "game_logic.h": "c",
+        "undo_redo.h": "c"
     }
 }

@@ -68,7 +68,10 @@ void updateGridWithUserInput(Grid *gameGrid, Player player, gameState *currentGa
                         ptrTurn->chosen=userInput;
                         ptrTurn->symbol=player.symbol;
                         ptrTurn->i=i;
-                        ptrTurn->j=j;  
+                        ptrTurn->j=j; 
+                        printf("%c\n",ptrTurn->chosen);
+                        printf("%d\n",ptrTurn->i);
+                        printf("%d\n",ptrTurn->j); 
                         ptrTurn++;
                         gameGrid->grid[i][j] = player.symbol;
                         currentGame->remainingLines--;
@@ -84,6 +87,9 @@ void updateGridWithUserInput(Grid *gameGrid, Player player, gameState *currentGa
                         ptrTurn->symbol=player.symbol;
                         ptrTurn->i=i;
                         ptrTurn->j=j;  
+                        printf("%c\n",ptrTurn->chosen);
+                        printf("%d\n",ptrTurn->i);
+                        printf("%d\n",ptrTurn->j);
                         ptrTurn++;
                         gameGrid->grid[i][j] = player.symbol;
                         currentGame->remainingLines--;
