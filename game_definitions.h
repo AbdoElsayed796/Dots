@@ -37,3 +37,11 @@ typedef struct
     char symbol;
     bool newPlayer;
 } Player;
+
+typedef struct 
+{
+ char chosen;
+ char symbol;
+ int i;
+ int j;
+}gameTurn;

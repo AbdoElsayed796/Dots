@@ -124,7 +124,7 @@ void printCharacterOrBox(Grid gameGrid, int row)
 
 void printGrid(Grid gameGrid, gameState *currentGame)
 {
-    clearConsole();
+    //clearConsole();
     printf("\n");
     for (int i = 0; i < gameGrid.size; i++)
     {

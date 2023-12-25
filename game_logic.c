@@ -3,8 +3,9 @@
 #include "user_input.h"
 #include "grid.h"
 #include "ansi_colors.h"
+#include "undo_redo.h"
 
-void turns(Grid *gameGrid, gameState *currentGame, int remainingLines)
+void turns(Grid *gameGrid, gameState *currentGame, int remainingLines,gameTurn *ptrTurn)
 {
     Player player1, player2;
     player1.symbol = PLAYER1;
@@ -21,11 +22,11 @@ void turns(Grid *gameGrid, gameState *currentGame, int remainingLines)
         switch (currentGame->CurrentTurn)
         {
         case enPLAYER_1:
-            updateGridWithUserInput(gameGrid, player1, currentGame, getUserInput(gameGrid->size));
+            updateGridWithUserInput(gameGrid, player1, currentGame, getUserInput(gameGrid->size),ptrTurn);
             printGrid((*gameGrid), currentGame);
             break;
         case enPLAYER_2:
-            updateGridWithUserInput(gameGrid, player2, currentGame, getUserInput(gameGrid->size));
+            updateGridWithUserInput(gameGrid, player2, currentGame, getUserInput(gameGrid->size),ptrTurn);
             printGrid((*gameGrid), currentGame);
             break;
         }

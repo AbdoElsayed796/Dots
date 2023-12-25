@@ -5,6 +5,7 @@
 #include "game_definitions.h"
 #include "grid.h"
 #include "ansi_colors.h"
+#include "undo_redo.h"
 
 Player findPlayer(char *playerName)
 {
@@ -145,26 +146,30 @@ void leaderboard()
 
 int main()
 {
-    // Player player;
-    // scanf("%s", player.name);
-    // player = findPlayer(player.name);
-    // printf("Player: %s\nScore: %d", player.name, player.score);
-    // if (player.newPlayer == true)
-    //     addPlayerToScoreboard(&player);
-    leaderboard();
+    Player player;
+   // scanf("%s", player.name);
+   // player = findPlayer(player.name);
+    //printf("Player: %s\nScore: %d", player.name, player.score);
+    //if (player.newPlayer == true)
+       // addPlayerToScoreboard(&player);
+    //leaderboard();
+  
+    unsigned char size = 3;
+    Grid gameGrid = createGrid(2 * size - 1);
+    initializeGrid(&gameGrid);
+    gameState currentGame;
+    currentGame.scoreOfPlayer1 = 0;
+    currentGame.scoreOfPlayer2 = 0;
+    currentGame.remainingLines = (2 * size) * (size - 1);
+    currentGame.remainingBoxes = (size-1) * (size-1);  
+    gameTurn dataOfTurns[currentGame.remainingLines];
+    gameTurn*ptrTurn=dataOfTurns; 
 
-    // unsigned char size = 4;
-    // Grid gameGrid = createGrid(2 * size - 1);
-    // initializeGrid(&gameGrid);
-
-    // gameState currentGame;
-    // currentGame.scoreOfPlayer1 = 0;
-    // currentGame.scoreOfPlayer2 = 0;
-    // currentGame.remainingLines = (2 * size) * (size - 1);
-    // currentGame.remainingBoxes = size * size;
-    // printGrid(gameGrid, &currentGame);
-    // turns(&gameGrid, &currentGame, currentGame.remainingLines - 1);
-    // freeGrid(&gameGrid);
+     
+    turns(&gameGrid, &currentGame, currentGame.remainingLines - 1,ptrTurn);
+   // undo(ptrTurn,&gameGrid,&currentGame);
+    printGrid(gameGrid,&currentGame);
+    freeGrid(&gameGrid);
 
     return 0;
 }
