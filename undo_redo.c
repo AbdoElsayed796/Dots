@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-void undo(gameTurn *ptrTurn, Grid *gameGrid, gameState *currentGame)
+void undo(gameTurn *ptrTurn, Grid *gameGrid, GameState *currentGame)
 {
   gameGrid->grid[ptrTurn->i][ptrTurn->j] = ptrTurn->chosen;
   currentGame->remainingLines++;
@@ -18,10 +18,10 @@ void undo(gameTurn *ptrTurn, Grid *gameGrid, gameState *currentGame)
         switch (ptrTurn->symbol)
         {
         case PLAYER1:
-          currentGame->scoreOfPlayer1++;
+          currentGame->player1Score++;
           break;
         case PLAYER2:
-          currentGame->scoreOfPlayer2++;
+          currentGame->player2Score++;
           break;
         }
       }
@@ -35,10 +35,10 @@ void undo(gameTurn *ptrTurn, Grid *gameGrid, gameState *currentGame)
         switch (ptrTurn->symbol)
         {
         case PLAYER1:
-          currentGame->scoreOfPlayer1--;
+          currentGame->player1Score--;
           break;
         case PLAYER2:
-          currentGame->scoreOfPlayer2--;
+          currentGame->player2Score--;
           break;
         }
         gameGrid->grid[(ptrTurn->i) - 1][ptrTurn->j] = ' ';
@@ -52,10 +52,10 @@ void undo(gameTurn *ptrTurn, Grid *gameGrid, gameState *currentGame)
         switch (ptrTurn->symbol)
         {
         case PLAYER1:
-          currentGame->scoreOfPlayer1--;
+          currentGame->player1Score--;
           break;
         case PLAYER2:
-          currentGame->scoreOfPlayer2--;
+          currentGame->player2Score--;
           break;
         }
       }
@@ -65,10 +65,10 @@ void undo(gameTurn *ptrTurn, Grid *gameGrid, gameState *currentGame)
         switch (ptrTurn->symbol)
         {
         case PLAYER1:
-          currentGame->scoreOfPlayer1--;
+          currentGame->player1Score--;
           break;
         case PLAYER2:
-          currentGame->scoreOfPlayer2--;
+          currentGame->player2Score--;
           break;
         }
         gameGrid->grid[(ptrTurn->i) - 1][ptrTurn->j] = ' ';
@@ -89,10 +89,10 @@ void undo(gameTurn *ptrTurn, Grid *gameGrid, gameState *currentGame)
         switch (ptrTurn->symbol)
         {
         case PLAYER1:
-          currentGame->scoreOfPlayer1--;
+          currentGame->player1Score--;
           break;
         case PLAYER2:
-          currentGame->scoreOfPlayer2--;
+          currentGame->player2Score--;
           break;
         }
       }
@@ -106,10 +106,10 @@ void undo(gameTurn *ptrTurn, Grid *gameGrid, gameState *currentGame)
         switch (ptrTurn->symbol)
         {
         case PLAYER1:
-          currentGame->scoreOfPlayer1--;
+          currentGame->player1Score--;
           break;
         case PLAYER2:
-          currentGame->scoreOfPlayer2--;
+          currentGame->player2Score--;
           break;
         }
       }
@@ -122,10 +122,10 @@ void undo(gameTurn *ptrTurn, Grid *gameGrid, gameState *currentGame)
         switch (ptrTurn->symbol)
         {
         case PLAYER1:
-          currentGame->scoreOfPlayer1--;
+          currentGame->player1Score--;
           break;
         case PLAYER2:
-          currentGame->scoreOfPlayer2--;
+          currentGame->player2Score--;
           break;
         }
       }
@@ -135,10 +135,10 @@ void undo(gameTurn *ptrTurn, Grid *gameGrid, gameState *currentGame)
         switch (ptrTurn->symbol)
         {
         case PLAYER1:
-          currentGame->scoreOfPlayer1--;
+          currentGame->player1Score--;
           break;
         case PLAYER2:
-          currentGame->scoreOfPlayer2--;
+          currentGame->player2Score--;
           break;
         }
       }
@@ -148,11 +148,11 @@ void undo(gameTurn *ptrTurn, Grid *gameGrid, gameState *currentGame)
   }
 
 }
-void redo (gameTurn *ptrTurn, Grid *gameGrid, gameState *currentGame)
+void redo (gameTurn *ptrTurn, Grid *gameGrid, GameState *currentGame)
 {
  ptrTurn++;
  gameGrid->grid[ptrTurn->i][ptrTurn->j]=PLAYER1;
  currentGame->remainingLines--;
  checkBoxesAroundLine(ptrTurn->i,ptrTurn->j,gameGrid,ptrTurn->symbol,currentGame);
 }
-//checkBoxesAroundLine(int i, int j, Grid *gameGrid, char playerSymbol, gameState *currentGame)
+//checkBoxesAroundLine(int i, int j, Grid *gameGrid, char playerSymbol, GameState *currentGame)

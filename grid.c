@@ -131,14 +131,14 @@ void printCharacterOrBox(Grid gameGrid, int row)
     }
 }
 
-void printGrid(Grid gameGrid, gameState *currentGame)
+void printGrid(Grid gameGrid, GameState *currentGame)
 {
     const static clock_t start = clock();
     SmallNumber timeDiffMinutes;
     SmallNumber timeDiffSeconds;
     getTimeDiff(start, &timeDiffMinutes, &timeDiffSeconds);
 
-    //clearConsole();
+    // clearConsole();
     printf("\n");
     for (int i = 0; i < gameGrid.size; i++)
     {
@@ -161,9 +161,9 @@ void printGrid(Grid gameGrid, gameState *currentGame)
     }
     printf("\n\n");
     printf(GRN "Remaining Boxes: %d" RESET, currentGame->remainingBoxes);
-    printf(BHBLU "\t\t\tPlayer 1 current score: %d\n" RESET, currentGame->scoreOfPlayer1);
+    printf(BHBLU "\t\t\tPlayer 1 current score: %d\n" RESET, currentGame->player1Score);
     printf(MAG "Remaining Lines: %d" RESET, currentGame->remainingLines);
-    printf(BHRED "\t\t\tPlayer 2 current score: %d\n" RESET, currentGame->scoreOfPlayer2);
+    printf(BHRED "\t\t\tPlayer 2 current score: %d\n" RESET, currentGame->player2Score);
     printf(BHWHT "Time: %02d:%02d\n" RESET, timeDiffMinutes, timeDiffSeconds);
 
     switch (currentGame->CurrentTurn)
@@ -172,7 +172,7 @@ void printGrid(Grid gameGrid, gameState *currentGame)
         printf("\t\t\t\t\t" BHBLU "Player 1 turn: " RESET);
         break;
     case enPLAYER_2:
-        printf("\t\t\t\t\t" BHRED "Player 2 turn: " RESET );
+        printf("\t\t\t\t\t" BHRED "Player 2 turn: " RESET);
         break;
     }
 }

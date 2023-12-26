@@ -5,7 +5,7 @@
 #include "ansi_colors.h"
 #include "undo_redo.h"
 
-void turns(Grid *gameGrid, gameState *currentGame, int remainingLines,gameTurn *ptrTurn)
+void turns(Grid *gameGrid, GameState *currentGame, int remainingLines, gameTurn *ptrTurn)
 {
     Player player1, player2;
     player1.symbol = PLAYER1;
@@ -18,11 +18,11 @@ void turns(Grid *gameGrid, gameState *currentGame, int remainingLines,gameTurn *
         switch (currentGame->CurrentTurn)
         {
         case enPLAYER_1:
-            updateGridWithUserInput(gameGrid, player1, currentGame, getUserInput(gameGrid->size),ptrTurn);
+            updateGridWithUserInput(gameGrid, player1, currentGame, getUserInput(gameGrid->size), ptrTurn);
             printGrid((*gameGrid), currentGame);
             break;
         case enPLAYER_2:
-            updateGridWithUserInput(gameGrid, player2, currentGame, getUserInput(gameGrid->size),ptrTurn);
+            updateGridWithUserInput(gameGrid, player2, currentGame, getUserInput(gameGrid->size), ptrTurn);
             printGrid((*gameGrid), currentGame);
             break;
         }
@@ -62,7 +62,7 @@ void markBoxSides(int i, int j, Grid *gameGrid, char playerSymbol)
         gameGrid->grid[row][column] = playerSymbol;
     }
 }
-bool checkAndMarkClosedBox(int i, int j, Grid *gameGrid, char playerSymbol, gameState *currentGame)
+bool checkAndMarkClosedBox(int i, int j, Grid *gameGrid, char playerSymbol, GameState *currentGame)
 {
     if (countBoxSides(i, j, gameGrid) == 4)
     {
@@ -72,17 +72,17 @@ bool checkAndMarkClosedBox(int i, int j, Grid *gameGrid, char playerSymbol, game
         switch (playerSymbol)
         {
         case PLAYER1:
-            currentGame->scoreOfPlayer1++;
+            currentGame->player1Score++;
             break;
         case PLAYER2:
-            currentGame->scoreOfPlayer2++;
+            currentGame->player2Score++;
             break;
         }
         return true;
     }
     return false;
 }
-void checkBoxesAroundLine(int i, int j, Grid *gameGrid, char playerSymbol, gameState *currentGame)
+void checkBoxesAroundLine(int i, int j, Grid *gameGrid, char playerSymbol, GameState *currentGame)
 {
     bool closedABox = false;
     if (i % 2 == 0)

@@ -187,9 +187,9 @@ int main()
     unsigned char size = 3;
     Grid gameGrid = createGrid(2 * size - 1);
     initializeGrid(&gameGrid);
-    gameState currentGame;
-    currentGame.scoreOfPlayer1 = 0;
-    currentGame.scoreOfPlayer2 = 0;
+    GameState currentGame;
+    currentGame.player1Score = 0;
+    currentGame.player2Score = 0;
     currentGame.remainingLines = (2 * size) * (size - 1);
     currentGame.remainingBoxes = (size - 1) * (size - 1);
 

@@ -55,7 +55,7 @@ unsigned char getUserInput(char gridSize)
     return userInput;
 }
 
-void updateGridWithUserInput(Grid *gameGrid, Player player, gameState *currentGame, char userInput,gameTurn *ptrTurn)
+void updateGridWithUserInput(Grid *gameGrid, Player player, GameState *currentGame, char userInput,gameTurn *ptrTurn)
 {
     while (1)
     {

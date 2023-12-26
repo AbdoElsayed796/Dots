@@ -1,4 +1,4 @@
-#include<stdbool.h>
+#include <stdbool.h>
 #pragma once
 
 #define MAX_INPUT_LENGTH 50
@@ -23,25 +23,39 @@ typedef struct
 } Grid;
 typedef struct
 {
-    int scoreOfPlayer1;
-    int scoreOfPlayer2;
+    int player1Score;
+    int player2Score;
     int remainingLines;
     int remainingBoxes;
     CurrentTurn CurrentTurn;
 
-} gameState;
+} GameState;
 typedef struct
 {
     char name[MAX_NAME_LENGTH];
-    int score;
     char symbol;
+    int score;
     bool newPlayer;
 } Player;
 
-typedef struct 
+typedef struct
 {
- char chosen;
- char symbol;
- int i;
- int j;
-}gameTurn;
+    char chosen;
+    char symbol;
+    int i;
+    int j;
+} gameTurn;
+
+typedef struct
+{
+    char oldValue;
+    char oldValue;
+    SmallNumber i;
+    SmallNumber j;
+} Move;
+typedef struct
+{
+    Move *moves;
+    SmallNumber currentMove;
+    SmallNumber numMovesPlayed;
+} MovesHistory;
