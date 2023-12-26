@@ -182,7 +182,7 @@ int main()
     // printf("Player: %s\nScore: %d", player.name, player.score);
     // if (player.newPlayer == true)
     // addPlayerToScoreboard(&player);
-    // leaderboard();
+    // leaderboard(printTop10);
 
     unsigned char size = 3;
     Grid gameGrid = createGrid(2 * size - 1);
@@ -197,24 +197,24 @@ int main()
     gameTurn *ptrTurn = dataOfTurns;
 
     turns(&gameGrid, &currentGame, currentGame.remainingLines - 1, ptrTurn);
-    printf("check of undo and redo\n");
+    // printf("check of undo and redo\n");
 
-    undo(ptrTurn, &gameGrid, &currentGame);
-    undo(ptrTurn, &gameGrid, &currentGame);
-    undo(ptrTurn, &gameGrid, &currentGame);
-    undo(ptrTurn, &gameGrid, &currentGame);
+    // undo(ptrTurn, &gameGrid, &currentGame);
+    // undo(ptrTurn, &gameGrid, &currentGame);
+    // undo(ptrTurn, &gameGrid, &currentGame);
+    // undo(ptrTurn, &gameGrid, &currentGame);
 
-    printGrid(gameGrid, &currentGame);
+    // printGrid(gameGrid, &currentGame);
 
-    printf("%c\n", ptrTurn->chosen);
-    printf("%d\n", ptrTurn->i);
-    printf("%d\n", ptrTurn->j);
-    ptrTurn--;
-    printf("%c\n", ptrTurn->chosen);
-    printf("%d\n", ptrTurn->i);
-    printf("%d\n", ptrTurn->j);
+    // printf("%c\n", ptrTurn->chosen);
+    // printf("%d\n", ptrTurn->i);
+    // printf("%d\n", ptrTurn->j);
+    // ptrTurn--;
+    // printf("%c\n", ptrTurn->chosen);
+    // printf("%d\n", ptrTurn->i);
+    // printf("%d\n", ptrTurn->j);
 
-    freeGrid(&gameGrid);
+    // freeGrid(&gameGrid);
 
     return 0;
 }

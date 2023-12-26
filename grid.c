@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "ansi_colors.h"
 #include "grid.h" //Include header file defining Grid structure and constants
 
@@ -7,18 +8,7 @@ void clearConsole()
 {
     printf("\e[1;1H\e[2J"); // ANSI escape code to clear the console
 }
-void printGameTitle()
-{
-    printf(BHRED "                           _       __ ______ __    ______ ____   __  ___ ______   ______ ____   \n");
-    printf("                          | |     / // ____// /   / ____// __ \\ /  |/  // ____/  /_  __// __ \\  \n");
-    printf("                          | | /| / // __/  / /   / /    / / / // /|_/ // __/      / /  / / / /  \n");
-    printf("                          | |/ |/ // /___ / /___/ /___ / /_/ // /  / // /___     / /  / /_/ /   \n");
-    printf("    ____   ____  ______ __|_/  |________/______/_____/ \\_____/_/__/_//_____/ ___/_/__/_____/ ______ ___     __  ___ ______\n" RESET);
-    printf(BHMAG "   / __ \\ / __ \\/_  __// ___/   /   |   / | / // __ \\   / __ ) / __ \\| |/ / / ____// ___/   / ____//   |   /  |/  // ____/\n");
-    printf("  / / / // / / / / /   \\__ \\   / /| |  /  |/ // / / /  / __  |/ / / /|   / / __/   \\__ \\   / / __ / /| |  / /|_/ // __/   \n");
-    printf(" / /_/ // /_/ / / /   ___/ /  / ___ | / /|  // /_/ /  / /_/ // /_/ //   | / /___  ___/ /  / /_/ // ___ | / /  / // /___   \n");
-    printf("/_____/ \\____/ /_/   /____/  /_/  |_|/_/ |_//_____/  /_____/ \\____//_/|_|/_____/ /____/   \\____//_/  |_|/_/  /_//_____/   \n" RESET);
-}
+
 void initializeGrid(Grid *gameGrid)
 {
     unsigned char ch = '0';
@@ -39,6 +29,27 @@ void initializeGrid(Grid *gameGrid)
             }
 }
 
+void getTimeDiff(clock_t startTime, SmallNumber *minutes, SmallNumber *seconds)
+{
+    clock_t end = clock();
+    *seconds += (int)(end - startTime) / CLOCKS_PER_SEC;
+    *minutes += (short)(*seconds) / 60;
+    *seconds %= 60;
+}
+
+//* printing grid
+void printGameTitle()
+{
+    printf(BHRED "                           _       __ ______ __    ______ ____   __  ___ ______   ______ ____   \n");
+    printf("                          | |     / // ____// /   / ____// __ \\ /  |/  // ____/  /_  __// __ \\  \n");
+    printf("                          | | /| / // __/  / /   / /    / / / // /|_/ // __/      / /  / / / /  \n");
+    printf("                          | |/ |/ // /___ / /___/ /___ / /_/ // /  / // /___     / /  / /_/ /   \n");
+    printf("    ____   ____  ______ __|_/  |________/______/_____/ \\_____/_/__/_//_____/ ___/_/__/_____/ ______ ___     __  ___ ______\n" RESET);
+    printf(BHMAG "   / __ \\ / __ \\/_  __// ___/   /   |   / | / // __ \\   / __ ) / __ \\| |/ / / ____// ___/   / ____//   |   /  |/  // ____/\n");
+    printf("  / / / // / / / / /   \\__ \\   / /| |  /  |/ // / / /  / __  |/ / / /|   / / __/   \\__ \\   / / __ / /| |  / /|_/ // __/   \n");
+    printf(" / /_/ // /_/ / / /   ___/ /  / ___ | / /|  // /_/ /  / /_/ // /_/ //   | / /___  ___/ /  / /_/ // ___ | / /  / // /___   \n");
+    printf("/_____/ \\____/ /_/   /____/  /_/  |_|/_/ |_//_____/  /_____/ \\____//_/|_|/_____/ /____/   \\____//_/  |_|/_/  /_//_____/   \n" RESET);
+}
 void printDotsRow(Grid gameGrid, int row)
 {
     for (int j = 0; j < gameGrid.size; j++)
@@ -62,7 +73,6 @@ void printDotsRow(Grid gameGrid, int row)
                 printf(BHYEL "%-5c" RESET, gameGrid.grid[row][j]);
             }
 }
-
 void printVerticalLines(Grid gameGrid, int row)
 {
     for (int j = 0; j < gameGrid.size; j++)
@@ -89,7 +99,6 @@ void printVerticalLines(Grid gameGrid, int row)
         }
     }
 }
-
 void printCharacterOrBox(Grid gameGrid, int row)
 {
     for (int j = 0; j < gameGrid.size; j++)
@@ -124,6 +133,11 @@ void printCharacterOrBox(Grid gameGrid, int row)
 
 void printGrid(Grid gameGrid, gameState *currentGame)
 {
+    const static clock_t start = clock();
+    SmallNumber timeDiffMinutes;
+    SmallNumber timeDiffSeconds;
+    getTimeDiff(start, &timeDiffMinutes, &timeDiffSeconds);
+
     //clearConsole();
     printf("\n");
     for (int i = 0; i < gameGrid.size; i++)
@@ -146,17 +160,19 @@ void printGrid(Grid gameGrid, gameState *currentGame)
         }
     }
     printf("\n\n");
-    printf(GRN "Number OF Remaining Boxes is : %d" RESET, currentGame->remainingBoxes);
-    printf(BHBLU "\tPoints Of Player1 is : %d\n" RESET, currentGame->scoreOfPlayer1);
-    printf(MAG "Number OF Remaining Lines is : %d" RESET, currentGame->remainingLines);
-    printf(BHRED "\tPoints OF Player2 is : %d\n\n" RESET, currentGame->scoreOfPlayer2);
+    printf(GRN "Remaining Boxes: %d" RESET, currentGame->remainingBoxes);
+    printf(BHBLU "\t\t\tPlayer 1 current score: %d\n" RESET, currentGame->scoreOfPlayer1);
+    printf(MAG "Remaining Lines: %d" RESET, currentGame->remainingLines);
+    printf(BHRED "\t\t\tPlayer 2 current score: %d\n" RESET, currentGame->scoreOfPlayer2);
+    printf(BHWHT "Time: %02d:%02d\n" RESET, timeDiffMinutes, timeDiffSeconds);
+
     switch (currentGame->CurrentTurn)
     {
     case enPLAYER_1:
-        printf("\t\t\t\t\t" BHBLU "Player 1 turn" RESET "\n\t\t\t\t\t");
+        printf("\t\t\t\t\t" BHBLU "Player 1 turn: " RESET);
         break;
     case enPLAYER_2:
-        printf("\t\t\t\t\t" BHRED "Player 2 turn" RESET "\n\t\t\t\t\t");
+        printf("\t\t\t\t\t" BHRED "Player 2 turn: " RESET );
         break;
     }
 }
