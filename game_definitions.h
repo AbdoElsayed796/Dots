@@ -48,7 +48,7 @@ typedef struct
 
 typedef struct
 {
-    char oldValue;
+    char playerSymbol;
     char oldValue;
     SmallNumber i;
     SmallNumber j;

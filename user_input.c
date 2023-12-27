@@ -55,8 +55,9 @@ unsigned char getUserInput(char gridSize)
     return userInput;
 }
 
-void updateGridWithUserInput(Grid *gameGrid, Player player, GameState *currentGame, char userInput,gameTurn *ptrTurn)
+void updateGridWithUserInput(Grid *gameGrid, Player player, GameState *currentGame, char userInput,MovesHistory *movesHistory)
 {
+    Move move;
     while (1)
     {
         for (int i = 0; i < gameGrid->size; i++)
@@ -65,15 +66,15 @@ void updateGridWithUserInput(Grid *gameGrid, Player player, GameState *currentGa
                 for (int j = 1; j < gameGrid->size; j += 2)
                     if (gameGrid->grid[i][j] == userInput)
                     {
-                        ptrTurn->chosen=userInput;
-                        ptrTurn->symbol=player.symbol;
-                        ptrTurn->i=i;
-                        ptrTurn->j=j; 
-                        printf("%c\n",ptrTurn->chosen);
-                        printf("%d\n",ptrTurn->i);
-                        printf("%d\n",ptrTurn->j); 
-                        ptrTurn++;
-                        gameGrid->grid[i][j] = player.symbol;
+                        move.i=i;move.j=j;                        //! ubdate Move Struct
+                        move.oldValue=userInput;
+                        move.playerSymbol=player.symbol;
+
+                        movesHistory->moves[movesHistory->currentMove+1]=move;  //! update movesHistory struct
+                        movesHistory->currentMove++;
+                        movesHistory->numMovesPlayed++;
+                    
+                        gameGrid->grid[i][j] = player.symbol;                  //! update grid
                         currentGame->remainingLines--;
                         checkBoxesAroundLine(i, j, gameGrid, player.symbol, currentGame);
                         return;
@@ -82,16 +83,17 @@ void updateGridWithUserInput(Grid *gameGrid, Player player, GameState *currentGa
             else
                 for (int j = 0; j < gameGrid->size; j += 2)
                     if (gameGrid->grid[i][j] == userInput)
-                    {   
-                        ptrTurn->chosen=userInput;
-                        ptrTurn->symbol=player.symbol;
-                        ptrTurn->i=i;
-                        ptrTurn->j=j;  
-                        printf("%c\n",ptrTurn->chosen);
-                        printf("%d\n",ptrTurn->i);
-                        printf("%d\n",ptrTurn->j);
-                        ptrTurn++;
-                        gameGrid->grid[i][j] = player.symbol;
+                    {
+                        move.i=i;move.j=j;                        //! ubdate Move Struct
+                        move.oldValue=userInput;
+                        move.playerSymbol=player.symbol;
+
+                        movesHistory->moves[movesHistory->currentMove+1]=move;  //! update movesHistory struct
+                        movesHistory->currentMove++;
+                        movesHistory->numMovesPlayed++;
+                    
+
+                        gameGrid->grid[i][j] = player.symbol;                    //! update grid
                         currentGame->remainingLines--;
                         checkBoxesAroundLine(i, j, gameGrid, player.symbol, currentGame);
                         return;
