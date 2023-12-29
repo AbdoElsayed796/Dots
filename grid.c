@@ -138,7 +138,7 @@ void printGrid(Grid gameGrid, GameState *currentGame)
     SmallNumber timeDiffSeconds;
     getTimeDiff(start, &timeDiffMinutes, &timeDiffSeconds);
 
-    // clearConsole();
+    clearConsole();
     printf("\n");
     for (int i = 0; i < gameGrid.size; i++)
     {

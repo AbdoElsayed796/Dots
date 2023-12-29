@@ -3,5 +3,5 @@
 #include <stdbool.h>
 #include "game_definitions.h"
 
-unsigned char getUserInput(char gridSize);
-void updateGridWithUserInput(Grid *gameGrid, Player currentTurn,GameState *currentGame, char userInput,MovesHistory *moveHistory);
+void handleUserInput(Grid *gameGrid, char playerSymbol, GameState *currentGame, MovesHistory *movesHistory);
+char updateGridWithUserInput(Grid *gameGrid, char playerSymbol, GameState *currentGame, char userInput, MovesHistory *movesHistory);

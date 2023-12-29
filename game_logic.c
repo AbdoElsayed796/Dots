@@ -1,44 +1,9 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "user_input.h"
 #include "grid.h"
 #include "ansi_colors.h"
 #include "undo_redo.h"
 
-void turns(Grid *gameGrid, GameState *currentGame, int remainingLines, MovesHistory *movesHistory) 
-{
-    int x;
-    Player player1, player2;
-    player1.symbol = PLAYER1;
-    player2.symbol = PLAYER2;
-    currentGame->CurrentTurn = enPLAYER_1;
-
-    printGrid((*gameGrid), currentGame);
-    while (remainingLines >= 0)
-    {
-        switch (currentGame->CurrentTurn)
-        {
-        case enPLAYER_1:
-            updateGridWithUserInput(gameGrid, player1, currentGame, getUserInput(gameGrid->size),movesHistory);
-            printGrid((*gameGrid), currentGame);
-            printf("Undo enter 0 Redo enter 1\n");
-            scanf("%d",&x);
-            if(x==0)undo(gameGrid,movesHistory,currentGame); 
-                 printGrid((*gameGrid), currentGame);
-            break;
-        case enPLAYER_2:
-            updateGridWithUserInput(gameGrid, player2, currentGame, getUserInput(gameGrid->size),movesHistory);
-            printGrid((*gameGrid), currentGame);
-              printf("Undo enter 0 Redo enter 1\n");
-            scanf("%d",&x);
-            if(x==0)undo(gameGrid,movesHistory,currentGame); 
-                 printGrid((*gameGrid), currentGame);
-            break;
-        }
-
-        remainingLines--;
-    }
-}
 
 SmallNumber countBoxSides(int i, int j, Grid *gameGrid) //* returns number of closed sides around a box
 {
