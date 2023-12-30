@@ -8,7 +8,7 @@ char chooseOpenedSide(SmallNumber i, SmallNumber j, Grid *gameGrid)
 {
     SmallNumber row, column;
     SmallNumber directionalArr[2][4] = {
-        {0, 0, 1, 0 - 1},
+        {0, 0, 1,- 1},
         {1, -1, 0, 0}};
 
     for (int k = 0; k < 4; k++)
@@ -54,7 +54,7 @@ void turns(Player *player1, Player *player2, Grid *gameGrid, GameState *currentG
             break;
         case enPLAYER_2:
 
-            if (player2->isHuman)
+            if (!(currentGame->versusComputer))
                 handleUserInput(gameGrid, player2->symbol, currentGame, movesHistory);
             else
             {
@@ -72,10 +72,9 @@ void turns(Player *player1, Player *player2, Grid *gameGrid, GameState *currentG
 int main()
 {
     Player player1, player2;
-    player1.isHuman = true;
     player1.symbol = PLAYER1;
-    player2.isHuman = false;
     player2.symbol = PLAYER2;
+
     // scanf("%s", player.name);
     // player = findPlayer(player.name);
     // printf("Player: %s\nScore: %d", player.name, player.score);
@@ -87,6 +86,7 @@ int main()
     Grid gameGrid = createGrid(2 * size - 1);
     initializeGrid(&gameGrid);
     GameState currentGame;
+    currentGame.versusComputer =true;
     currentGame.player1Score = 0;
     currentGame.player2Score = 0;
     currentGame.remainingLines = (2 * size) * (size - 1);

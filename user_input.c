@@ -63,11 +63,27 @@ char performUserInput(char *userInput, Grid *gameGrid, char playerSymbol, GameSt
     {
         {
         case enUNDO:
+            if(currentGame->versusComputer){
+            undo(gameGrid, movesHistory, currentGame);
             undo(gameGrid, movesHistory, currentGame);
             return SUCCESS;
+            }
+            else
+            {
+             undo(gameGrid, movesHistory, currentGame);
+            return SUCCESS;
+            }       
         case enREDO:
+            if(currentGame->versusComputer){
+            redo(gameGrid, movesHistory, currentGame);
             redo(gameGrid, movesHistory, currentGame);
             return SUCCESS;
+            }
+            else
+            {
+             redo(gameGrid, movesHistory, currentGame);
+             return SUCCESS;
+            }       
         case enEXIT:
             // exit();
             return SUCCESS;

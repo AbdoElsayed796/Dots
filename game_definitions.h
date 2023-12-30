@@ -39,8 +39,9 @@ typedef struct
     int player2Score;
     int remainingLines;
     int remainingBoxes;
+    bool versusComputer;
     CurrentTurn CurrentTurn;
-
+    
 } GameState;
 typedef struct
 {
@@ -48,7 +49,6 @@ typedef struct
     char symbol;
     int score;
     bool newPlayer;
-    bool isHuman;
 } Player;
 
 typedef struct

@@ -56,6 +56,21 @@ bool checkAndMarkClosedBox(int i, int j, Grid *gameGrid, char playerSymbol, Game
     }
     return false;
 }
+void switchTurns(bool closedABox, GameState *currentGame)
+{
+    if (!closedABox)
+    {
+        switch (currentGame->CurrentTurn)
+        {
+        case enPLAYER_1:
+            currentGame->CurrentTurn = enPLAYER_2;
+            break;
+        case enPLAYER_2:
+            currentGame->CurrentTurn = enPLAYER_1;
+            break;
+        }
+    }
+}
 void checkBoxesAroundLine(int i, int j, Grid *gameGrid, char playerSymbol, GameState *currentGame)
 {
     bool closedABox = false;
@@ -83,16 +98,5 @@ void checkBoxesAroundLine(int i, int j, Grid *gameGrid, char playerSymbol, GameS
             closedABox |= checkAndMarkClosedBox(i, j + 1, gameGrid, playerSymbol, currentGame);
         }
     }
-    if (!closedABox)
-    {
-        switch (currentGame->CurrentTurn)
-        {
-        case enPLAYER_1:
-            currentGame->CurrentTurn = enPLAYER_2;
-            break;
-        case enPLAYER_2:
-            currentGame->CurrentTurn = enPLAYER_1;
-            break;
-        }
-    }
+    switchTurns(closedABox, currentGame);
 }
