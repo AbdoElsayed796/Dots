@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include "ansi_colors.h"
-#include "grid.h" //Include header file defining Grid structure and constants
+#include "grid.h" 
+#include "game_logic.h"
 
 void clearConsole()
 {
@@ -29,26 +30,18 @@ void initializeGrid(Grid *gameGrid)
             }
 }
 
-void getTimeDiff(clock_t startTime, SmallNumber *minutes, SmallNumber *seconds)
-{
-    clock_t end = clock();
-    *seconds += (int)(end - startTime) / CLOCKS_PER_SEC;
-    *minutes += (short)(*seconds) / 60;
-    *seconds %= 60;
-}
-
 //* printing grid
 void printGameTitle()
 {
-    printf(BHRED "                           _       __ ______ __    ______ ____   __  ___ ______   ______ ____   \n");
-    printf("                          | |     / // ____// /   / ____// __ \\ /  |/  // ____/  /_  __// __ \\  \n");
-    printf("                          | | /| / // __/  / /   / /    / / / // /|_/ // __/      / /  / / / /  \n");
-    printf("                          | |/ |/ // /___ / /___/ /___ / /_/ // /  / // /___     / /  / /_/ /   \n");
-    printf("    ____   ____  ______ __|_/  |________/______/_____/ \\_____/_/__/_//_____/ ___/_/__/_____/ ______ ___     __  ___ ______\n" RESET);
-    printf(BHMAG "   / __ \\ / __ \\/_  __// ___/   /   |   / | / // __ \\   / __ ) / __ \\| |/ / / ____// ___/   / ____//   |   /  |/  // ____/\n");
-    printf("  / / / // / / / / /   \\__ \\   / /| |  /  |/ // / / /  / __  |/ / / /|   / / __/   \\__ \\   / / __ / /| |  / /|_/ // __/   \n");
-    printf(" / /_/ // /_/ / / /   ___/ /  / ___ | / /|  // /_/ /  / /_/ // /_/ //   | / /___  ___/ /  / /_/ // ___ | / /  / // /___   \n");
-    printf("/_____/ \\____/ /_/   /____/  /_/  |_|/_/ |_//_____/  /_____/ \\____//_/|_|/_____/ /____/   \\____//_/  |_|/_/  /_//_____/   \n" RESET);
+    printf(BHRED "\t                           _       __ ______ __    ______ ____   __  ___ ______   ______ ____   \n");
+    printf("\t                          | |     / // ____// /   / ____// __ \\ /  |/  // ____/  /_  __// __ \\  \n");
+    printf("\t                          | | /| / // __/  / /   / /    / / / // /|_/ // __/      / /  / / / /  \n");
+    printf("\t                          | |/ |/ // /___ / /___/ /___ / /_/ // /  / // /___     / /  / /_/ /   \n");
+    printf("\t    ____   ____  ______ __|_/  |________/______/_____/ \\_____/_/__/_//_____/ ___/_/__/_____/ ______ ___     __  ___ ______\n" RESET);
+    printf(BHMAG "\t   / __ \\ / __ \\/_  __// ___/   /   |   / | / // __ \\   / __ ) / __ \\| |/ / / ____// ___/   / ____//   |   /  |/  // ____/\n");
+    printf("\t  / / / // / / / / /   \\__ \\   / /| |  /  |/ // / / /  / __  |/ / / /|   / / __/   \\__ \\   / / __ / /| |  / /|_/ // __/   \n");
+    printf("\t / /_/ // /_/ / / /   ___/ /  / ___ | / /|  // /_/ /  / /_/ // /_/ //   | / /___  ___/ /  / /_/ // ___ | / /  / // /___   \n");
+    printf("\t/_____/ \\____/ /_/   /____/  /_/  |_|/_/ |_//_____/  /_____/ \\____//_/|_|/_____/ /____/   \\____//_/  |_|/_/  /_//_____/   \n" RESET);
 }
 void printDotsRow(Grid gameGrid, int row)
 {
@@ -133,12 +126,10 @@ void printCharacterOrBox(Grid gameGrid, int row)
 
 void printGrid(Grid gameGrid, GameState *currentGame)
 {
-    const static clock_t start = clock();
     SmallNumber timeDiffMinutes;
     SmallNumber timeDiffSeconds;
-    getTimeDiff(start, &timeDiffMinutes, &timeDiffSeconds);
-
-    clearConsole();
+    getTimeDiff(&timeDiffMinutes, &timeDiffSeconds);
+    // clearConsole();
     printf("\n");
     for (int i = 0; i < gameGrid.size; i++)
     {

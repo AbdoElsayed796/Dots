@@ -7,9 +7,13 @@
 #define DASH '-'
 #define PLAYER1 1
 #define PLAYER2 2
-#define FAILURE 0
-#define SUCCESS 3
+#define FAILURE 0 //! dummy value for failure
+#define SUCCESS 3 //! dummy value for success
 #define SCOREBOARD_FILE "scoreboard.txt"
+#define GAME_1 "game1.bin"
+#define GAME_2 "game2.bin"
+#define GAME_3 "game3.bin"
+#define FORMATTED_DATE_SIZE 25
 
 typedef char SmallNumber;
 
@@ -26,6 +30,7 @@ typedef enum
     enREDO = 2,
     enSAVE = 3,
     enPLAY = 4,
+    enOTHER = 5
 } UserAction;
 
 typedef struct
@@ -41,7 +46,7 @@ typedef struct
     int remainingBoxes;
     bool versusComputer;
     CurrentTurn CurrentTurn;
-    
+
 } GameState;
 typedef struct
 {

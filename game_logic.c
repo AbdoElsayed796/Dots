@@ -100,3 +100,11 @@ void checkBoxesAroundLine(int i, int j, Grid *gameGrid, char playerSymbol, GameS
     }
     switchTurns(closedABox, currentGame);
 }
+void getTimeDiff(SmallNumber *minDiff, SmallNumber *secDiff)
+{
+    const static time_t gameStart = time(NULL);
+    time_t now = time(NULL);
+    int timeDiff = difftime(now, gameStart);
+    *minDiff = timeDiff / 60;
+    *secDiff = timeDiff % 60;
+}

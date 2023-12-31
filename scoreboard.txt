@@ -44,3 +44,5 @@ Player: ameena	Score: 60
 Player: ameera  Score: 97
 Player: asmaa	Score: 35
 Player: ahmed	Score: 0
+Player: adel	Score: 0
+Player: lolo	Score: 0

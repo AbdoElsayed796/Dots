@@ -6,6 +6,7 @@
 #include "game_logic.h"
 #include "undo_redo.h"
 #include "game_definitions.h"
+#include "save_load.h"
 
 bool isValidGridInput(char userInput, char gridSize) //* validate user input based on grid size
 {
@@ -41,13 +42,16 @@ UserAction getUserAction(char *userInput)
         return enREDO;
     else if (strncmp(userInput, "exit", 4) == 0)
         return enEXIT;
+    else if (strncmp(userInput, "save", 4) == 0)
+        return enSAVE;
     else
         return enPLAY;
 }
 
 char *readUserInput()
 {
-    static char inputBuffer[MAX_INPUT_LENGTH];
+    char *inputBuffer = (char *)malloc(sizeof(char) * MAX_INPUT_LENGTH);
+
     scanf("%s", inputBuffer);
 
     char userInput;
@@ -57,39 +61,57 @@ char *readUserInput()
         return inputBuffer + 1;
 }
 
-char performUserInput(char *userInput, Grid *gameGrid, char playerSymbol, GameState *currentGame, MovesHistory *movesHistory)
+char performUserInput(char *userInput, Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory, Player *player1, Player *player2)
 {
     switch (getUserAction(userInput))
     {
         {
         case enUNDO:
-            if(currentGame->versusComputer){
-            undo(gameGrid, movesHistory, currentGame);
-            undo(gameGrid, movesHistory, currentGame);
-            return SUCCESS;
+            if (currentGame->versusComputer)
+            {
+                while (movesHistory->moves[movesHistory->currentMove].playerSymbol != PLAYER1)
+                {
+                    if (undo(gameGrid, movesHistory, currentGame) == SUCCESS)
+                        return SUCCESS;
+                }
+                undo(gameGrid, movesHistory, currentGame);
+                return SUCCESS;
             }
             else
             {
-             undo(gameGrid, movesHistory, currentGame);
-            return SUCCESS;
-            }       
+                undo(gameGrid, movesHistory, currentGame);
+                return SUCCESS;
+            }
         case enREDO:
-            if(currentGame->versusComputer){
-            redo(gameGrid, movesHistory, currentGame);
-            redo(gameGrid, movesHistory, currentGame);
-            return SUCCESS;
+            if (currentGame->versusComputer)
+            {
+                while (movesHistory->moves[movesHistory->currentMove].playerSymbol != PLAYER1)
+                {
+                    if (redo(gameGrid, movesHistory, currentGame) == SUCCESS)
+                        return SUCCESS;
+                }
+                redo(gameGrid, movesHistory, currentGame);
+
+                return SUCCESS;
             }
             else
             {
-             redo(gameGrid, movesHistory, currentGame);
-             return SUCCESS;
-            }       
+                redo(gameGrid, movesHistory, currentGame);
+                return SUCCESS;
+            }
+        case enSAVE:
+            return saveGame(gameGrid, currentGame, movesHistory, player1, player2) ? SUCCESS : FAILURE;
         case enEXIT:
             // exit();
             return SUCCESS;
         case enPLAY:
             if (isValidGridInput(userInput[0], gameGrid->size))
-                return updateGridWithUserInput(gameGrid, playerSymbol, currentGame, userInput[0], movesHistory);
+            {
+                if (currentGame->CurrentTurn == PLAYER1)
+                    return updateGridWithUserInput(gameGrid, PLAYER1, currentGame, userInput[0], movesHistory, false);
+                else
+                    return updateGridWithUserInput(gameGrid, PLAYER2, currentGame, userInput[0], movesHistory, false);
+            }
             else
             {
                 printf("\t\t\t\t\t" REDHB "Input not in Grid:" RESET " ");
@@ -101,16 +123,19 @@ char performUserInput(char *userInput, Grid *gameGrid, char playerSymbol, GameSt
     }
 }
 
-void handleUserInput(Grid *gameGrid, char playerSymbol, GameState *currentGame, MovesHistory *movesHistory)
+void handleUserInput(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory, Player *player1, Player *player2)
 {
     char userInput;
+    char *inputBuffer;
     do
     {
-        userInput = performUserInput(readUserInput(), gameGrid, playerSymbol, currentGame, movesHistory);
+        inputBuffer = readUserInput();
+        userInput = performUserInput(inputBuffer, gameGrid, currentGame, movesHistory, player1, player2);
     } while (userInput == FAILURE);
+    free(inputBuffer);
 }
 
-char updateGridWithUserInput(Grid *gameGrid, char playerSymbol, GameState *currentGame, char userInput, MovesHistory *movesHistory)
+char updateGridWithUserInput(Grid *gameGrid, char playerSymbol, GameState *currentGame, char userInput, MovesHistory *movesHistory, bool isRedo)
 {
     Move move;
     while (1)
@@ -121,7 +146,7 @@ char updateGridWithUserInput(Grid *gameGrid, char playerSymbol, GameState *curre
                 for (int j = 1; j < gameGrid->size; j += 2)
                     if (gameGrid->grid[i][j] == userInput)
                     {
-                        addMoveToHistory(i, j, userInput, playerSymbol, movesHistory);
+                        addMoveToHistory(i, j, userInput, playerSymbol, movesHistory, isRedo);
                         gameGrid->grid[i][j] = playerSymbol;
                         (currentGame->remainingLines)--;
                         checkBoxesAroundLine(i, j, gameGrid, playerSymbol, currentGame);
@@ -132,7 +157,7 @@ char updateGridWithUserInput(Grid *gameGrid, char playerSymbol, GameState *curre
                 for (int j = 0; j < gameGrid->size; j += 2)
                     if (gameGrid->grid[i][j] == userInput)
                     {
-                        addMoveToHistory(i, j, userInput, playerSymbol, movesHistory);
+                        addMoveToHistory(i, j, userInput, playerSymbol, movesHistory, isRedo);
                         gameGrid->grid[i][j] = playerSymbol;
                         (currentGame->remainingLines)--;
                         checkBoxesAroundLine(i, j, gameGrid, playerSymbol, currentGame);

@@ -10,6 +10,9 @@
         "game_definitions.h": "c",
         "time.h": "c",
         "game_logic.h": "c",
-        "undo_redo.h": "c"
+        "undo_redo.h": "c",
+        "array": "c",
+        "string_view": "c",
+        "initializer_list": "c"
     }
 }

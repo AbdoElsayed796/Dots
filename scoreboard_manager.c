@@ -141,11 +141,13 @@ void printPlayers(Player *players, short playersCount)
 
 void printLeaderboard(Player *players, short playersCount)
 {
+    clearConsole();
     printLeaderboardTitle();
     printPlayers(players, playersCount);
 }
 void printTop10(Player *players, short playersCount)
 {
+    clearConsole();
     printTop10Title();
     if (playersCount <= 10)
         printPlayers(players, playersCount);
@@ -173,4 +175,3 @@ void leaderboard(void (*whatToPrint)(Player *, short))
 
     free(players); // Free dynamically allocated memory
 }
-
