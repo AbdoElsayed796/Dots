@@ -3,7 +3,7 @@
 
 #define MAX_INPUT_LENGTH 50
 #define MAX_NAME_LENGTH 50
-#define DOT '*'
+#define DOT '+'
 #define DASH '-'
 #define PLAYER1 1
 #define PLAYER2 2

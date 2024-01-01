@@ -1,4 +1,4 @@
-#include<stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -6,7 +6,7 @@
 #include "grid.h"
 #include "ansi_colors.h"
 
-    //* Dealing with files
+//* Dealing with files
 Player findPlayer(char *playerName)
 {
     FILE *ptrFile = fopen(SCOREBOARD_FILE, "r");
@@ -14,8 +14,7 @@ Player findPlayer(char *playerName)
     if (ptrFile != NULL)
     {
 
-        for (int i = 0; i < strlen(playerName); i++)
-            playerName[i] = tolower(playerName[i]);
+        strlwr(playerName);
 
         while (fscanf(ptrFile, "Player: %s\tScore: %d\n", player.name, &player.score) == 2)
         {
@@ -26,13 +25,13 @@ Player findPlayer(char *playerName)
             }
         }
 
+        fclose(ptrFile);
+
         //* If player not found, create a new player
         strcpy(player.name, playerName);
         player.newPlayer = true;
         player.score = 0;
         return player;
-
-        fclose(ptrFile);
     }
     else
     {
@@ -139,6 +138,7 @@ void printPlayers(Player *players, short playersCount)
     printf("\t\t\t\t  +----------------------+-------+\n");
 }
 
+//* leaderboard printing functions
 void printLeaderboard(Player *players, short playersCount)
 {
     clearConsole();
@@ -167,11 +167,37 @@ void leaderboard(void (*whatToPrint)(Player *, short))
     Player *players;
     short playersCount = loadPlayersFromFile(&players);
     qsort(players, playersCount, sizeof(Player), scoreComparator);
-
-    if (whatToPrint == &printTop10)
-        printTop10(players, playersCount);
-    else if (whatToPrint == &printLeaderboard)
-        printLeaderboard(players, playersCount);
+    whatToPrint(players, playersCount);
 
     free(players); // Free dynamically allocated memory
+}
+
+void updatePlayerScore(Player *player, SmallNumber playerGameScore)
+{
+    if (player->newPlayer)
+    {
+        addPlayerToScoreboard(player);
+    }
+    else
+    {
+        Player *players;
+        short playersCount;
+        playersCount = loadPlayersFromFile(&players);
+        for (int i = 0; i < playersCount; i++)
+        {
+            if (strcmp(players[i].name, player->name) == 0)
+            {
+                players[i].score += playerGameScore;
+                break;
+            }
+        }
+        FILE *filePtr = fopen(SCOREBOARD_FILE, "w");
+        if (filePtr != NULL)
+            for (int i = 0; i < playersCount; i++)
+                fprintf(filePtr, "Player: %s\tScore: %d\n", players[i].name, players[i].score);
+        else
+            printf("Error: Unable to open the scoreboard file in writing mode.\n");
+        fclose(filePtr);
+        free(players);
+    }
 }

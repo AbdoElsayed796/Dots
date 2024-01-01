@@ -4,7 +4,7 @@
 #include "ansi_colors.h"
 #include "undo_redo.h"
 
-
+//* Box Functions
 SmallNumber countBoxSides(int i, int j, Grid *gameGrid) //* returns number of closed sides around a box
 {
     SmallNumber row, column;
@@ -56,6 +56,7 @@ bool checkAndMarkClosedBox(int i, int j, Grid *gameGrid, char playerSymbol, Game
     }
     return false;
 }
+
 void switchTurns(bool closedABox, GameState *currentGame)
 {
     if (!closedABox)
@@ -71,6 +72,7 @@ void switchTurns(bool closedABox, GameState *currentGame)
         }
     }
 }
+//* This Function switches turns if the player didn't close a box
 void checkBoxesAroundLine(int i, int j, Grid *gameGrid, char playerSymbol, GameState *currentGame)
 {
     bool closedABox = false;
@@ -100,6 +102,7 @@ void checkBoxesAroundLine(int i, int j, Grid *gameGrid, char playerSymbol, GameS
     }
     switchTurns(closedABox, currentGame);
 }
+
 void getTimeDiff(SmallNumber *minDiff, SmallNumber *secDiff)
 {
     const static time_t gameStart = time(NULL);

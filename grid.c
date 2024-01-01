@@ -192,7 +192,6 @@ Grid createGrid(SmallNumber size)
 
     return newGrid;
 }
-
 void freeGrid(Grid *gameGrid)
 {
     for (int i = 0; i < gameGrid->size; i++) // Free memory for each row in the grid

@@ -6,8 +6,9 @@
 #include "grid.h"
 #include "ansi_colors.h"
 
-char *openFileAndReadDate(FILE **filePtr, char *filename);
+char *openFileAndReadDate(FILE **filePtr, char *filename);// declaration
 
+//* Saving Game
 void openFileAndWriteDate(FILE **filePtr, char *filename)
 {
     *filePtr = fopen(filename, "wb");
@@ -43,7 +44,7 @@ void writeMovesHistory(FILE **filePtr, MovesHistory *movesHistory)
 {
     fwrite(&(movesHistory->currentMove), sizeof(SmallNumber), 1, *filePtr);
     fwrite(&(movesHistory->numMovesPlayed), sizeof(SmallNumber), 1, *filePtr);
-    fwrite(movesHistory->moves, sizeof(Move), movesHistory->numMovesPlayed, *filePtr);
+    fwrite(movesHistory->moves, sizeof(Move), movesHistory->numMovesPlayed + 1, *filePtr);
 }
 void saveGameData(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory, Player *player1, Player *player2, char *filename)
 {
@@ -55,12 +56,12 @@ void saveGameData(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHis
     writeMovesHistory(&filePtr, movesHistory);
     fclose(filePtr);
 }
-bool saveGame(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory, Player *player1, Player *player2)
+bool saveGame(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory, Player *player1, Player *player2)//* returns true if successful
 {
     FILE *filePtr;
     int userInput;
     printf(BHWHT "\n\n\t\t\t\t\t\tChoose a file:\n\n");
-    printf(BHWHT "\t\t\t\t\t\t1- %s", openFileAndReadDate(&filePtr, GAME_1));
+    printf(BHWHT "\t\t\t\t\t1- %s", openFileAndReadDate(&filePtr, GAME_1));
     fclose(filePtr);
     printf(BHWHT "\n\t\t\t\t\t2- %s", openFileAndReadDate(&filePtr, GAME_2));
     fclose(filePtr);
@@ -85,6 +86,7 @@ bool saveGame(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory
     return true;
 }
 
+//* Reading Game
 char *openFileAndReadDate(FILE **filePtr, char *filename)
 {
     *filePtr = fopen(filename, "rb");
@@ -116,13 +118,13 @@ void readGameState(FILE **filePtr, GameState *currentGame)
 {
     fread(currentGame, sizeof(GameState), 1, *filePtr);
 }
-void readMovesHistory(FILE **filePtr, MovesHistory *movesHistory)
+void readMovesHistory(FILE **filePtr, MovesHistory *movesHistory, SmallNumber gridSize)
 {
     fread(&(movesHistory->currentMove), sizeof(SmallNumber), 1, *filePtr);
     fread(&(movesHistory->numMovesPlayed), sizeof(SmallNumber), 1, *filePtr);
 
-    movesHistory->moves = (Move *)malloc(movesHistory->numMovesPlayed * sizeof(Move));
-    fread(movesHistory->moves, sizeof(Move), movesHistory->numMovesPlayed, *filePtr);
+    movesHistory->moves = (Move *)malloc(sizeof(Move) * (2 * gridSize) * (gridSize - 1));
+    fread(movesHistory->moves, sizeof(Move), movesHistory->numMovesPlayed + 1, *filePtr);
 }
 void readGame(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory, Player *player1, Player *player2, char *filename)
 {
@@ -131,7 +133,7 @@ void readGame(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory
     readGrid(&filePtr, gameGrid);
     readPlayer(&filePtr, player1);
     readGameState(&filePtr, currentGame);
-    readMovesHistory(&filePtr, movesHistory);
+    readMovesHistory(&filePtr, movesHistory, gameGrid->size);
     printGrid(*gameGrid, currentGame);
     fclose(filePtr);
 }

@@ -4,5 +4,5 @@
 void printTop10(Player *players, short playersCount);
 void printLeaderboard(Player *players, short playersCount);
 void leaderboard(void (*whatToPrint)(Player *, short));
-void addPlayerToScoreboard(Player *player);
 Player findPlayer(char *playerName);
+void updatePlayerScore(Player *player, SmallNumber playerGameScore);

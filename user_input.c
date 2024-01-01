@@ -2,12 +2,28 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <conio.h>
+#include <ctype.h>
 #include "ansi_colors.h"
 #include "game_logic.h"
 #include "undo_redo.h"
 #include "game_definitions.h"
 #include "save_load.h"
 
+void pause()
+{
+    printf("\nPress any key to continue ...\n");
+    getche();
+    getche();
+}
+void clearInputBuffer()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}
+
+//* User Input
 bool isValidGridInput(char userInput, char gridSize) //* validate user input based on grid size
 {
     bool inputInGrid;
@@ -33,7 +49,6 @@ bool isValidGridInput(char userInput, char gridSize) //* validate user input bas
         }
     return inputInGrid;
 }
-
 UserAction getUserAction(char *userInput)
 {
     if (strncmp(userInput, "undo", 4) == 0)
@@ -47,7 +62,6 @@ UserAction getUserAction(char *userInput)
     else
         return enPLAY;
 }
-
 char *readUserInput()
 {
     char *inputBuffer = (char *)malloc(sizeof(char) * MAX_INPUT_LENGTH);
@@ -60,7 +74,24 @@ char *readUserInput()
     else
         return inputBuffer + 1;
 }
+bool yesOrNo(char *message)
+{
+    char *userInput;
+    char userChar;
+    printf(BHRED "\t\t\t\t\t%s" RESET, message);
+    do
+    {
+        userInput = readUserInput();
+        userChar = userInput[0];
+        userChar = tolower(userChar);
+    } while (userChar != 'y' && userChar != 'n');
 
+    if (userChar == 'y')
+        return true;
+    return false;
+}
+
+//* Handling User Input
 char performUserInput(char *userInput, Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory, Player *player1, Player *player2)
 {
     switch (getUserAction(userInput))
@@ -102,7 +133,8 @@ char performUserInput(char *userInput, Grid *gameGrid, GameState *currentGame, M
         case enSAVE:
             return saveGame(gameGrid, currentGame, movesHistory, player1, player2) ? SUCCESS : FAILURE;
         case enEXIT:
-            // exit();
+            if(yesOrNo("Are you sure you want to exit without saving [Y/N]: "))
+                exit(0);
             return SUCCESS;
         case enPLAY:
             if (isValidGridInput(userInput[0], gameGrid->size))
@@ -122,7 +154,6 @@ char performUserInput(char *userInput, Grid *gameGrid, GameState *currentGame, M
         }
     }
 }
-
 void handleUserInput(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory, Player *player1, Player *player2)
 {
     char userInput;
@@ -134,6 +165,7 @@ void handleUserInput(Grid *gameGrid, GameState *currentGame, MovesHistory *moves
     } while (userInput == FAILURE);
     free(inputBuffer);
 }
+
 
 char updateGridWithUserInput(Grid *gameGrid, char playerSymbol, GameState *currentGame, char userInput, MovesHistory *movesHistory, bool isRedo)
 {
@@ -168,3 +200,4 @@ char updateGridWithUserInput(Grid *gameGrid, char playerSymbol, GameState *curre
         return FAILURE;
     }
 }
+

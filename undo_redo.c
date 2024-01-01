@@ -6,6 +6,8 @@
 #include "game_definitions.h"
 #include "game_logic.h"
 #include "ansi_colors.h"
+
+//* Undo Functions
 void retriveLinesColors(SmallNumber i, SmallNumber j, Grid *gameGrid, MovesHistory *movesHistory)
 {
     SmallNumber row, column;
@@ -42,7 +44,6 @@ void undoGameState(MovesHistory *movesHistory, GameState *currentGame, int opene
 
     (movesHistory->currentMove)--;
 }
-
 void openBox(SmallNumber i, SmallNumber j, Grid *gameGrid, SmallNumber *openedBoxesCount, MovesHistory *movesHistory)
 {
     gameGrid->grid[i][j] = ' ';
@@ -52,7 +53,6 @@ void openBox(SmallNumber i, SmallNumber j, Grid *gameGrid, SmallNumber *openedBo
         retriveLinesColors(i, j, gameGrid, movesHistory);
     }
 }
-
 SmallNumber updateBoxStatusAfterUndo(Grid *gameGrid, MovesHistory *movesHistory, GameState *currentGame)
 {
     SmallNumber openedBoxesCount = 0;
@@ -95,21 +95,15 @@ char undo(Grid *gameGrid, MovesHistory *movesHistory, GameState *currentGame) //
     SmallNumber i = movesHistory->moves[movesHistory->currentMove].i;
     SmallNumber j = movesHistory->moves[movesHistory->currentMove].j;
 
-    switch (movesHistory->moves[movesHistory->currentMove].oldValue)
-    {
-    case enPLAYER_1:
-        currentGame->CurrentTurn = enPLAYER_2;
-        break;
-    case enPLAYER_2:
+    if (movesHistory->moves[movesHistory->currentMove].playerSymbol == PLAYER1)
         currentGame->CurrentTurn = enPLAYER_1;
-        break;
-    }
+    else
+        currentGame->CurrentTurn = enPLAYER_2;
 
     gameGrid->grid[i][j] = movesHistory->moves[movesHistory->currentMove].oldValue;
     undoGameState(movesHistory, currentGame, updateBoxStatusAfterUndo(gameGrid, movesHistory, currentGame), symbol);
     return FAILURE;
 }
-
 char redo(Grid *gameGrid, MovesHistory *movesHistory, GameState *currentGame) //! it returns the opposite of the state
 {
     if (movesHistory->currentMove >= movesHistory->numMovesPlayed)

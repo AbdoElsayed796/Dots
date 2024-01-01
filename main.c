@@ -9,18 +9,6 @@
 #include "computer_turn.h"
 #include "save_load.h"
 
-void pause()
-{
-    printf("\nPress any key to continue ...\n");
-    getchar();
-    getchar();
-}
-void clearInputBuffer()
-{
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
-}
 void userManual()
 {
     clearConsole();
@@ -34,6 +22,51 @@ void userManual()
 
     pause();
 }
+void printWelcomeMessage(Player *player)
+{
+    if (!player->newPlayer)
+    {
+        printf(BHMAG "\n\t\t\t\t\t\t\t\tWelcome Back %s!", player->name);
+        printf(BHCYN "\n\t\t\t\t\t\t\tIt's very nice to see you again! " RESET);
+        sleep(2);
+    }
+    else
+    {
+        printf(BHBLU "\n\t\t\t\t\t\t\tWelcome To Our Game %s!", player->name);
+        printf(BHBLU "\n\t\t\t\t\t\t\tI hope you enjoy it :)" RESET);
+        sleep(2);
+    }
+}
+
+void startTurns(Player *player1, Player *player2, Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory)
+{
+    currentGame->CurrentTurn = enPLAYER_1;
+
+    printGrid((*gameGrid), currentGame);
+    while (currentGame->remainingLines > 0)
+    {
+        switch (currentGame->CurrentTurn)
+        {
+        case enPLAYER_1:
+            handleUserInput(gameGrid, currentGame, movesHistory, player1, player2);
+            printGrid((*gameGrid), currentGame);
+            break;
+        case enPLAYER_2:
+
+            if (!(currentGame->versusComputer))
+                handleUserInput(gameGrid, currentGame, movesHistory, player1, player2);
+            else
+            {
+                sleep(1);
+                computerTurn(gameGrid, PLAYER2, currentGame, movesHistory);
+            }
+            printGrid((*gameGrid), currentGame);
+            break;
+        }
+    }
+}
+
+//* Game initialization
 void initializeGameGrid(Grid *gameGrid)
 {
     do
@@ -78,22 +111,6 @@ void initalizeGameState(GameState *currentGame, SmallNumber gridSize)
         }
     } while (userInput != 1 && userInput != 2);
 }
-void printWelcomeMessageAndAddNewPlayers(Player *player)
-{
-    if (!player->newPlayer)
-    {
-        printf(BHMAG "\n\t\t\t\t\t\t\t\tWelcome Back! ");
-        printf(BHCYN "\n\t\t\t\t\t\t\tIt's very nice to see you again! " RESET);
-        sleep(2);
-    }
-    else
-    {
-        printf(BHBLU "\n\t\t\t\t\t\t\tWelcome To Our Game! ");
-        printf(BHBLU "\n\t\t\t\t\t\t\tI hope you enjoy it :)" RESET);
-        sleep(2);
-        addPlayerToScoreboard(player);
-    }
-}
 void initializePlayers(Player *player1, Player *player2, bool versusComputer)
 {
     clearConsole();
@@ -106,7 +123,7 @@ void initializePlayers(Player *player1, Player *player2, bool versusComputer)
     scanf("%s", &player1->name);
     *player1 = findPlayer(player1->name);
     player1->symbol = PLAYER1;
-    printWelcomeMessageAndAddNewPlayers(player1);
+    printWelcomeMessage(player1);
 
     if (versusComputer)
     {
@@ -119,7 +136,7 @@ void initializePlayers(Player *player1, Player *player2, bool versusComputer)
         scanf("%s", &player2->name);
         *player2 = findPlayer(player2->name);
         player2->symbol = PLAYER2;
-        printWelcomeMessageAndAddNewPlayers(player2);
+        printWelcomeMessage(player2);
     }
 }
 void initalizeMovesHistory(MovesHistory *movesHistory, SmallNumber gridSize)
@@ -127,33 +144,6 @@ void initalizeMovesHistory(MovesHistory *movesHistory, SmallNumber gridSize)
     movesHistory->moves = (Move *)malloc(sizeof(Move) * (2 * gridSize) * (gridSize - 1));
     movesHistory->currentMove = 0;
     movesHistory->numMovesPlayed = 0;
-}
-void startTurns(Player *player1, Player *player2, Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory)
-{
-    currentGame->CurrentTurn = enPLAYER_1;
-
-    printGrid((*gameGrid), currentGame);
-    while (currentGame->remainingLines > 0)
-    {
-        switch (currentGame->CurrentTurn)
-        {
-        case enPLAYER_1:
-            handleUserInput(gameGrid, currentGame, movesHistory, player1, player2);
-            printGrid((*gameGrid), currentGame);
-            break;
-        case enPLAYER_2:
-
-            if (!(currentGame->versusComputer))
-                handleUserInput(gameGrid, currentGame, movesHistory, player1, player2);
-            else
-            {
-                sleep(1);
-                computerTurn(gameGrid, player2->symbol, currentGame, movesHistory);
-            }
-            printGrid((*gameGrid), currentGame);
-            break;
-        }
-    }
 }
 void newGame(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory, Player *player1, Player *player2)
 {
@@ -165,8 +155,8 @@ void newGame(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory,
     startTurns(player1, player2, gameGrid, currentGame, movesHistory);
 
     freeGrid(gameGrid);
+    free(movesHistory->moves);
 }
-
 bool loadGame(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory, Player *player1, Player *player2)
 {
     FILE *filePtr;
@@ -198,19 +188,23 @@ bool loadGame(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory
 
     startTurns(player1, player2, gameGrid, currentGame, movesHistory);
     freeGrid(gameGrid);
-
+    free(movesHistory->moves);
     return true;
 }
 
-
-UserAction mainMenu(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory, Player *player1, Player *player2)
+//* Game Menu
+void printOptions()
 {
-    int option;
     printf(BWHT "\n\n\t\t\t\t\t\t\t1- User Manual\n");
     printf("\t\t\t\t\t\t\t2- Leaderboard\n");
     printf("\t\t\t\t\t\t\t3- New Game\n");
     printf("\t\t\t\t\t\t\t4- Load Game\n");
     printf("\t\t\t\t\t\t\t5- Exit\n\t\t\t\t\t\t\t" RESET);
+}
+UserAction mainMenu(Grid *gameGrid, GameState *currentGame, MovesHistory *movesHistory, Player *player1, Player *player2)
+{
+    int option;
+    printOptions();
     scanf("%d", &option);
     clearInputBuffer();
     switch (option)
@@ -243,7 +237,7 @@ UserAction mainMenu(Grid *gameGrid, GameState *currentGame, MovesHistory *movesH
         return enEXIT;
         break;
     case 4:
-        if(loadGame(gameGrid, currentGame, movesHistory, player1, player2))
+        if (loadGame(gameGrid, currentGame, movesHistory, player1, player2))
         {
             return enEXIT;
         }
@@ -254,12 +248,37 @@ UserAction mainMenu(Grid *gameGrid, GameState *currentGame, MovesHistory *movesH
         break;
     default:
         printf(BHRED "\t\t\t\t\t\t\t\tInvalid input\n" RESET);
-        printf("\n\nPress any key to continue ...\n");
-        getchar();
+        pause();
         return enOTHER;
         break;
     }
     return enOTHER;
+}
+void terminateGame(GameState *currentGame, Player *player1, Player *player2)
+{
+    clearConsole();
+    if (currentGame->player1Score > currentGame->player2Score)
+    {
+        printf(BHBLU "\n\t\t\t\t\t\t\tPLAYER 1 WON\n\n");
+        printf("\t\t\t\tPlayer 1 New Score: %d", currentGame->player1Score + player1->score);
+        printf(BHRED "\tPlayer 2 New Score: %d\n", currentGame->player1Score + player2->score);
+    }
+    else if (currentGame->player1Score < currentGame->player2Score)
+    {
+        printf(BHRED "\n\t\t\t\t\t\t\tPLAYER 2 WON\n\n");
+        printf(BHBLU "\t\t\t\tPlayer 1 New Score: %d", currentGame->player1Score + player1->score);
+        printf(BHRED "\tPlayer 2 New Score: %d\n" RESET, currentGame->player1Score + player2->score);
+    }
+    else
+    {
+        printf(BHWHT "\n\t\t\t\t\t\t  DRAW\n\n" RESET);
+        printf(BHBLU "\t\t\t\tPlayer 1 New Score: %d", currentGame->player1Score + player1->score);
+        printf(BHRED "\tPlayer 2 New Score: %d\n" RESET, currentGame->player1Score + player2->score);
+    }
+
+    updatePlayerScore(player1, currentGame->player1Score);
+    if (!currentGame->versusComputer)
+        updatePlayerScore(player2, currentGame->player2Score);
 }
 
 int main()
@@ -276,4 +295,8 @@ int main()
         printGameTitle();
         userInput = mainMenu(&gameGrid, &currentGame, &movesHistory, &player1, &player2);
     } while (userInput != enEXIT);
+
+    terminateGame(&currentGame, &player1, &player2);
+    sleep(1);
+    printf("\n\n\n\n");
 }
